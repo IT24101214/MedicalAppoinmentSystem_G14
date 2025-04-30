@@ -9,11 +9,13 @@ import java.util.*;
 @WebServlet(name = "AppointmentServlet", urlPatterns = {"/appointments"})
 public class AppointmentServlet extends HttpServlet {
     private AppointmentManager manager;
+    private final String FILE_PATH = "/appointments.json";
 
     @Override
     public void init() throws ServletException {
         super.init();
-        manager = new AppointmentManager();
+        String path = getServletContext().getRealPath(FILE_PATH);
+        manager = new AppointmentManager(path);
         manager.loadAppointments();
     }
 
@@ -66,6 +68,7 @@ public class AppointmentServlet extends HttpServlet {
 
     private void bookAppointment(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+        System.out.println("Booking Appointment.....");
         String patientName = request.getParameter("patientName");
         String doctorName = request.getParameter("doctorName");
         String date = request.getParameter("date");
