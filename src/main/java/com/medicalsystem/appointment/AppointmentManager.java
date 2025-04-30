@@ -8,10 +8,12 @@ import java.util.*;
 
 public class AppointmentManager {
     private List<Appointment> appointments;
-    private static final String FILE_NAME = "appointments.json";
+    private static final String FILE_NAME = "C:\\Users\\lenovo\\Desktop\\New Project OOP\\MedicalAppointmentSchedulingSystem\\src\\main\\resources\\appointments.json";
+    private String filePath = FILE_NAME;
 
-    public AppointmentManager() {
+    public AppointmentManager(String filePath) {
         appointments = new ArrayList<>();
+        this.filePath = filePath;
     }
 
     public List<Appointment> getAppointments() {
@@ -54,6 +56,8 @@ public class AppointmentManager {
         }
     }
 
+    // Single Page application in bootstrap
+
     public void loadAppointments() {
         File file = new File(FILE_NAME);
         if (!file.exists()) {
@@ -67,7 +71,7 @@ public class AppointmentManager {
                 jsonContent.append(line);
             }
 
-            if (jsonContent.length() > 0) {
+            if (!jsonContent.isEmpty()) {
                 JSONArray jsonAppointments = new JSONArray(jsonContent.toString());
                 for (int i = 0; i < jsonAppointments.length(); i++) {
                     JSONObject jsonAppointment = jsonAppointments.getJSONObject(i);
@@ -101,6 +105,7 @@ public class AppointmentManager {
     }
 
     public void sortAppointmentsByDate() {
-        appointments.sort(Comparator.comparing(Appointment::getDate).thenComparing(Appointment::getTime));
+        appointments.sort(Comparator.comparing(Appointment::getDate).
+                thenComparing(Appointment::getTime));
     }
 }

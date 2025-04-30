@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class AppointmentSystem {
     public static void main(String[] args) {
-        AppointmentManager manager = new AppointmentManager();
+        AppointmentManager manager = new AppointmentManager("src\\main\\webapp\\appointments.json");
         manager.loadAppointments(); // Load existing appointments
         Scanner scanner = new Scanner(System.in);
 

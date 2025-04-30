@@ -1,4 +1,4 @@
-package com.medicalsystem.appointment;
+/*package com.medicalsystem.appointment;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -7,37 +7,7 @@ import java.io.*;
 import java.util.List;
 
 public class AppointmentFileHandler {
-    private static final String FILE_NAME = "appointments.txt";
-
-    // Save appointments to a file
-    public static void saveAppointments(List<Appointment> appointments) {
-        // Try-with-resources to ensure the FileWriter is closed properly
-        try (FileWriter writer = new FileWriter(FILE_NAME)) {
-            // Create a JSONArray to store appointment data
-            JSONArray jsonAppointments = new JSONArray();
-
-            // Loop through the list of appointments and convert them into JSON format
-            for (Appointment appointment : appointments) {
-                JSONObject jsonAppointment = new JSONObject();
-                jsonAppointment.put("appointmentID", appointment.getAppointmentID());
-                jsonAppointment.put("patientName", appointment.getPatientName());
-                jsonAppointment.put("doctorName", appointment.getDoctorName());
-                jsonAppointment.put("date", appointment.getDate());
-                jsonAppointment.put("time", appointment.getTime());
-                jsonAppointments.put(jsonAppointment);
-            }
-
-            // Write the JSON array to the file
-            writer.write(jsonAppointments.toString());
-            System.out.println("Appointments saved successfully!");
-        } catch (IOException e) {
-            // Handle file I/O exceptions
-            System.err.println("Error saving appointments: " + e.getMessage());
-        } catch (Exception e) {
-            // Handle any unexpected exceptions
-            System.err.println("Unexpected error while saving appointments: " + e.getMessage());
-        }
-    }
+    private static final String FILE_NAME = "src\\main\\webapp\\appointments.json";
 
     // Load appointments from a file
     public static void loadAppointments(List<Appointment> appointments) {
@@ -89,6 +59,6 @@ public class AppointmentFileHandler {
         }
     }
 }
-
+*/
 
 
