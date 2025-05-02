@@ -30,15 +30,19 @@ public class AppointmentSystem {
                         String date = scanner.nextLine();
                         System.out.print("Enter Time (HH:MM): ");
                         String time = scanner.nextLine();
+                        System.out.print("Enter Urgency Level (1 = High, 2 = Medium, 3 = Low): ");
+                        int urgency = Integer.parseInt(scanner.nextLine());
 
                         int newId = manager.getAppointments().isEmpty() ? 1 :
                                 manager.getAppointments().stream().mapToInt(Appointment::getAppointmentID).max().getAsInt() + 1;
-                        manager.bookAppointment(new Appointment(newId, patient, doctor, date, time));
+
+                        manager.bookAppointment(new Appointment(newId, patient, doctor, date, time, urgency));
                         System.out.println("Appointment booked successfully!");
                         break;
 
+
                     case 2:
-                        manager.sortAppointmentsByDate();
+                        manager.sortAppointmentsByUrgency();
                         manager.viewAllAppointments();
                         break;
 
