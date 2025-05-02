@@ -63,27 +63,29 @@ public class AppointmentServlet extends HttpServlet {
             throws ServletException, IOException {
         List<Appointment> appointments = manager.getAppointments();
         request.setAttribute("appointments", appointments);
-        request.getRequestDispatcher("/viewAppointments.jsp").forward(request, response);
+        request.getRequestDispatcher("/Appointment.jsp").forward(request, response);
     }
 
     private void bookAppointment(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+            throws IOException, ServletException {
         System.out.println("Booking Appointment.....");
         String patientName = request.getParameter("patientName");
         String doctorName = request.getParameter("doctorName");
         String date = request.getParameter("date");
         String time = request.getParameter("time");
+        int urgency = Integer.parseInt(request.getParameter("urgency"));
 
         int newId = manager.getAppointments().isEmpty() ? 1 :
                 manager.getAppointments().stream()
                         .mapToInt(Appointment::getAppointmentID)
                         .max().getAsInt() + 1;
 
-        Appointment appointment = new Appointment(newId, patientName, doctorName, date, time);
+        Appointment appointment = new Appointment(newId, patientName, doctorName, date, time, urgency);
         manager.bookAppointment(appointment);
         manager.saveAppointments();
 
-        response.sendRedirect("appointments?action=view");
+        viewAppointments(request, response); // Call the same method directly
+
     }
 
     private void cancelAppointment(HttpServletRequest request, HttpServletResponse response)
