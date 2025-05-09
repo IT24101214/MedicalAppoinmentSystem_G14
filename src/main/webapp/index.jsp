@@ -1,51 +1,88 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Medical System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
-    <style>
-        body { padding-top: 80px; }
-    </style>
+    <meta charset="UTF-8">
+    <title>Medical Appointment System</title>
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>
+<body class="bg-blue-50 font-sans min-h-screen">
 
-<!-- Navigation Bar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Medical System</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" href="index.jsp">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="Appointment.jsp">Appointments</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="doctor.jsp">Doctor</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="patient.jsp">Patient</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="admin.jsp">Admin</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="feedback.jsp">Feedback</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="about.jsp">About</a>
-                </li>
-            </ul>
-        </div>
+<!-- Navbar -->
+<nav class="bg-mint-100 shadow-md p-4 flex justify-between items-center">
+    <div class="text-2xl font-bold text-mint-700">MediCare</div>
+    <div class="space-x-6 flex items-center">
+        <a href="index.jsp" class="flex items-center text-mint-800 hover:text-mint-600">
+            <i data-lucide="home" class="w-5 h-5 mr-1"></i> Home
+        </a>
+        <a href="adminLogin.jsp" class="flex items-center text-mint-800 hover:text-mint-600">
+            <i data-lucide="shield" class="w-5 h-5 mr-1"></i> Admin
+        </a>
+
+        <a href="FeedbackServlet" class="flex items-center text-mint-800 hover:text-mint-600">
+            <i data-lucide="message-circle" class="w-5 h-5 mr-1"></i> Feedback
+        </a>
+
+        <a href="doctorLogin.jsp" class="flex items-center text-mint-800 hover:text-mint-600">
+            <i data-lucide="log-in" class="w-5 h-5 mr-1"></i> Doctor
+        </a>
+
+        <a href="userLogin.jsp" class="flex items-center text-mint-800 hover:text-mint-600">
+            <i data-lucide="log-in" class="w-5 h-5 mr-1"></i> Sign In
+        </a>
+
+
     </div>
 </nav>
-<h3 class="text-center my-4">Welcome page</h3>
+
+<!-- Main Content -->
+<!-- Main Content -->
+<div class="flex justify-center items-center h-[80vh]">
+    <div class="text-center space-y-6">
+        <h1 class="text-4xl font-bold text-mint-700">Welcome to MediCare</h1>
+        <p class="text-lg text-gray-600">Your trusted medical appointment scheduler</p>
+
+        <!-- Make Appointment Button -->
+        <a href="createUser.jsp" class="bg-mint-600 hover:bg-mint-500 text-white px-6 py-3 rounded-full flex items-center shadow-md justify-center w-fit mx-auto">
+            <i data-lucide="calendar-plus" class="w-5 h-5 mr-2"></i> Make Appointment
+        </a>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-mint-100 text-center p-4 mt-12 text-mint-700">
+    <p>&copy; 2025 MediCare. All rights reserved.</p>
+</footer>
+
+<script>
+    lucide.createIcons();
+</script>
+
+<!-- Custom Mint Blue Theme -->
+<style>
+    :root {
+        --mint-50: #f0fdfa;
+        --mint-100: #ccfbf1;
+        --mint-200: #99f6e4;
+        --mint-300: #5eead4;
+        --mint-400: #2dd4bf;
+        --mint-500: #14b8a6;
+        --mint-600: #0d9488;
+        --mint-700: #0f766e;
+        --mint-800: #115e59;
+    }
+
+    .bg-mint-100 { background-color: var(--mint-100); }
+    .bg-mint-600 { background-color: var(--mint-600); }
+    .bg-mint-500:hover { background-color: var(--mint-500); }
+    .text-mint-700 { color: var(--mint-700); }
+    .text-mint-800 { color: var(--mint-800); }
+    .text-mint-600:hover { color: var(--mint-600); }
+    .border-mint-400 { border-color: var(--mint-400); }
+    .bg-mint-100:hover { background-color: var(--mint-100); }
+</style>
 </body>
 </html>
