@@ -3,4 +3,77 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
-</web-app>
+
+        <display-name>MedicalAppointmentSystem</display-name>
+
+        <!-- ========== Servlet Declarations and Mappings ========== -->
+
+        <!-- LoginServlet -->
+        <servlet>
+            <servlet-name>LoginServlet</servlet-name>
+            <servlet-class>com.medicalsystem.LoginServlet</servlet-class>
+        </servlet>
+        <servlet-mapping>
+            <servlet-name>LoginServlet</servlet-name>
+            <url-pattern>/userlogin</url-pattern>
+        </servlet-mapping>
+
+        <!-- AdminServlet -->
+        <servlet>
+            <servlet-name>AdminServlet</servlet-name>
+            <servlet-class>com.medicalsystem.Admin_Management.AdminServlet</servlet-class>
+        </servlet>
+        <servlet-mapping>
+            <servlet-name>AdminServlet</servlet-name>
+            <url-pattern>/adminServlet</url-pattern>
+        </servlet-mapping>
+
+        <!-- UserLoginServlet -->
+        <servlet>
+            <servlet-name>UserLoginServlet</servlet-name>
+            <servlet-class>com.medicalsystem.User_Management.UserLoginServlet</servlet-class>
+        </servlet>
+        <servlet-mapping>
+            <servlet-name>UserLoginServlet</servlet-name>
+            <url-pattern>/userLogin</url-pattern>
+        </servlet-mapping>
+
+        <!-- FeedbackServlet -->
+        <servlet>
+            <servlet-name>FeedbackServlet</servlet-name>
+            <servlet-class>com.medicalsystem.Feedback_Management.FeedbackServlet</servlet-class>
+        </servlet>
+        <servlet-mapping>
+            <servlet-name>FeedbackServlet</servlet-name>
+            <url-pattern>/feedback</url-pattern>
+        </servlet-mapping>
+
+        <!-- CreateUserServlet -->
+        <servlet>
+            <servlet-name>CreateUserServlet</servlet-name>
+            <servlet-class>com.medicalsystem.User_Management.CreateUserServlet</servlet-class>
+        </servlet>
+        <servlet-mapping>
+            <servlet-name>CreateUserServlet</servlet-name>
+            <url-pattern>/createUser</url-pattern>
+        </servlet-mapping>
+
+        <!-- DoctorScheduleServlet -->
+        <servlet>
+            <servlet-name>DoctorScheduleServlet</servlet-name>
+            <servlet-class>com.medicalsystem.DoctorSchedule_Management.DoctorScheduleServlet</servlet-class>
+        </servlet>
+        <servlet-mapping>
+            <servlet-name>DoctorScheduleServlet</servlet-name>
+            <url-pattern>/doctorScheduleServlet</url-pattern>
+        </servlet-mapping>
+
+        <!-- DoctorServlet has been removed from web.xml -->
+
+
+        <!-- ========== Welcome Page ========== -->
+        <welcome-file-list>
+            <welcome-file>index.jsp</welcome-file>
+        </welcome-file-list>
+
+    </web-app>
