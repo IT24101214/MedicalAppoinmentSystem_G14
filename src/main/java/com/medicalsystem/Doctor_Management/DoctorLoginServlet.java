@@ -12,7 +12,8 @@ import java.io.FileReader;
 import java.io.IOException;
 
 @WebServlet("/doctorLogin")
-public class DoctorLoginServlet extends HttpServlet {
+public class
+DoctorLoginServlet extends HttpServlet {
 
     private String doctorFilePath;
 
