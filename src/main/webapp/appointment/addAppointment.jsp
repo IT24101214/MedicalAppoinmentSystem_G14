@@ -82,7 +82,12 @@
 <jsp:include page="/header.jsp" />
 <div class="container">
     <h1>Schedule New Appointment</h1>
-    <form action="addAppointment" method="POST">
+
+    <% if (request.getAttribute("success") != null) { %>
+    <p style="color: green; font-weight: bold;"><%= request.getAttribute("success") %></p>
+    <% } %>
+
+    <form action="<%= request.getContextPath() %>/addAppointment" method="POST">
         <div class="form-group">
             <label for="appointmentId">Appointment ID</label>
             <input type="text" id="appointmentId" name="appointmentId" required>
