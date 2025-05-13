@@ -28,7 +28,7 @@ public class AddAppointmentServlet extends HttpServlet {
         Appointment a = new Appointment(id, patientId, doctorId, priority, reason, status);
         appointmentManager.addAppointment(a);
 
-        /// redirect to a servlet named appointment.txt
-        response.sendRedirect("appointment");
+        request.setAttribute("success", "Appointment added successfully!");
+        request.getRequestDispatcher("/appointment/addAppointment.jsp").forward(request, response);
     }
 }

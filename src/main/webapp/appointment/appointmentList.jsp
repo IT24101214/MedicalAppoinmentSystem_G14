@@ -91,16 +91,17 @@
 
         table {
             width: 100%;
-            max-width: 100%;
             border-collapse: collapse;
             margin-top: 30px;
             background: white;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
             font-size: 1.05rem;
+            border-radius: 8px;
+            overflow: hidden;
         }
 
         th, td {
-            padding: 16px 20px; /* more padding */
+            padding: 16px 20px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
@@ -110,8 +111,12 @@
             color: white;
         }
 
+        tr:nth-child(even) {
+            background-color: #f4f6f9;
+        }
+
         tr:hover {
-            background: #f1f1f1;
+            background-color: #ecf0f1;
         }
 
         .priority-high {
@@ -140,10 +145,11 @@
         }
 
         .action-btn {
-            padding: 5px 10px;
+            padding: 8px 16px;
             border: none;
-            border-radius: 3px;
+            border-radius: 5px;
             cursor: pointer;
+            font-weight: bold;
         }
 
         .btn-update {
@@ -151,9 +157,17 @@
             color: white;
         }
 
+        .btn-update:hover {
+            background: #2980b9;
+        }
+
         .btn-cancel {
             background: #e74c3c;
             color: white;
+        }
+
+        .btn-cancel:hover {
+            background: #c0392b;
         }
 
         footer {
@@ -174,17 +188,7 @@
 </head>
 <body>
 <header>
-    <!-- Include the header from directory -->
     <jsp:include page="/header.jsp" />
-    <div class="navbar">
-        <div class="logo">Medi<span>Care</span>|G14</div>
-        <div class="nav-links">
-            <a href="<%= request.getContextPath() %>/index.jsp">Home</a>
-            <a href="<%= request.getContextPath() %>/appointment/appointmentList.jsp">Appointments</a>
-            <a href="<%= request.getContextPath() %>/admin/login.jsp">Admin</a>
-            <a href="<%= request.getContextPath() %>/doctor/doctorLogin.jsp">Doctor</a>
-        </div>
-    </div>
 </header>
 
 <div class="container">
