@@ -13,7 +13,7 @@ $(document).ready(function() {
     });
 });
 
-// Create new appointment
+// Create new appointment.txt
 function createAppointment() {
 
     alert("Appointment created successfully!");
@@ -29,7 +29,7 @@ function createAppointment() {
         url: API_URL,
         type: "POST",
         contentType: "application/json",
-        data: JSON.stringify(appointment),
+        data: JSON.stringify(appointment.txt),
         success: function() {
             alert("Appointment created successfully!");
             $("#createForm")[0].reset();
@@ -93,7 +93,7 @@ function displayAppointments(appointments) {
     });
 }
 
-// Open edit modal with appointment data
+// Open edit modal with appointment.txt data
 function openEditModal(appointmentID) {
     $.get(API_URL + "/" + appointmentID, function(appointment) {
         $("#editAppointmentID").val(appointment.appointmentID);
@@ -106,11 +106,11 @@ function openEditModal(appointmentID) {
         const modal = new bootstrap.Modal(document.getElementById('editModal'));
         modal.show();
     }).fail(function(xhr) {
-        alert("Error fetching appointment: " + xhr.responseText);
+        alert("Error fetching appointment.txt: " + xhr.responseText);
     });
 }
 
-// Update appointment
+// Update appointment.txt
 function updateAppointment() {
     const appointment = {
         appointmentID: $("#editAppointmentID").val(),
@@ -131,14 +131,14 @@ function updateAppointment() {
             getAllAppointments();
         },
         error: function(xhr) {
-            alert("Error updating appointment: " + xhr.responseText);
+            alert("Error updating appointment.txt: " + xhr.responseText);
         }
     });
 }
 
-// Delete appointment
+// Delete appointment.txt
 function deleteAppointment(appointmentID) {
-    if (!confirm("Are you sure you want to delete this appointment?")) return;
+    if (!confirm("Are you sure you want to delete this appointment.txt?")) return;
 
     $.ajax({
         url: API_URL + "/" + appointmentID,
@@ -148,7 +148,7 @@ function deleteAppointment(appointmentID) {
             getAllAppointments();
         },
         error: function(xhr) {
-            alert("Error deleting appointment: " + xhr.responseText);
+            alert("Error deleting appointment.txt: " + xhr.responseText);
         }
     });
 }

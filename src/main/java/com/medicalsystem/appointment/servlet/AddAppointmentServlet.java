@@ -29,6 +29,6 @@ public class AddAppointmentServlet extends HttpServlet {
         appointmentManager.addAppointment(a);
 
         /// redirect to a servlet named appointment.txt
-        response.sendRedirect("appointments");
+        response.sendRedirect("appointment");
     }
 }

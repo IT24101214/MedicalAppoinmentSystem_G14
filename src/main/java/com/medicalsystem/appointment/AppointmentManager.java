@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 public class AppointmentManager {
-    private static final String FILE_PATH = "data/appointment.txt";
+    private static final String FILE_PATH = "C:\\Users\\lenovo\\Desktop\\New Project OOP\\MedicalAppointmentSchedulingSystem\\src\\main\\data\\appointment.txt";
     private PriorityQueue<Appointment> appointmentQueue = new PriorityQueue<>();
 
     public void addAppointment(Appointment a) {
