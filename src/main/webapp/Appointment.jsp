@@ -70,11 +70,13 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Urgency</label>
-                    <select class="form-select" name="urgency" required>
-                        <option value="1">High</option>
-                        <option value="2">Medium</option>
-                        <option value="3">Low</option>
-                    </select>
+                    <label>
+                        <select class="form-select" name="urgency" required>
+                            <option value="1">High</option>
+                            <option value="2">Medium</option>
+                            <option value="3">Low</option>
+                        </select>
+                    </label>
                 </div>
                 <button type="submit" class="btn btn-primary">Schedule Appointment</button>
             </form>

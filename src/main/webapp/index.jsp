@@ -3,86 +3,182 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Medical Appointment System</title>
-    <!-- Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons CDN -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare|G14</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --light: #ecf0f1;
+            --dark: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--dark);
+        }
+
+        header {
+            background: var(--secondary);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .nav-links a:hover {
+            background: var(--primary);
+            border-radius: 4px;
+            transform: translateY(-2px);
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .cta-btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .primary-btn {
+            background: var(--primary);
+            color: white;
+        }
+
+        .primary-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.1);
+        }
+
+        .secondary-btn {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .secondary-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        footer {
+            background: var(--secondary);
+            color: white;
+            text-align: center;
+            padding: 0.5rem;
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
 </head>
-<body class="bg-blue-50 font-sans min-h-screen">
-
-<!-- Navbar -->
-<nav class="bg-mint-100 shadow-md p-4 flex justify-between items-center">
-    <div class="text-2xl font-bold text-mint-700">MediCare</div>
-    <div class="space-x-6 flex items-center">
-        <a href="index.jsp" class="flex items-center text-mint-800 hover:text-mint-600">
-            <i data-lucide="home" class="w-5 h-5 mr-1"></i> Home
-        </a>
-        <a href="adminLogin.jsp" class="flex items-center text-mint-800 hover:text-mint-600">
-            <i data-lucide="shield" class="w-5 h-5 mr-1"></i> Admin
-        </a>
-
-        <a href="FeedbackServlet" class="flex items-center text-mint-800 hover:text-mint-600">
-            <i data-lucide="message-circle" class="w-5 h-5 mr-1"></i> Feedback
-        </a>
-
-        <a href="doctorLogin.jsp" class="flex items-center text-mint-800 hover:text-mint-600">
-            <i data-lucide="log-in" class="w-5 h-5 mr-1"></i> Doctor
-        </a>
-
-        <a href="userLogin.jsp" class="flex items-center text-mint-800 hover:text-mint-600">
-            <i data-lucide="log-in" class="w-5 h-5 mr-1"></i> Sign In
-        </a>
-
-
+<body>
+<header>
+    <div class="navbar">
+        <div class="logo">Medi<span>Care</span>|G14</div>
+        <div class="nav-links">
+            <a href="<%= request.getContextPath() %>/index.jsp">Home</a>
+            <a href="<%= request.getContextPath() %>/appointment/appointmentList.jsp">Appointments</a>
+            <a href="<%= request.getContextPath() %>/admin/login.jsp">Admin</a>
+            <a href="<%= request.getContextPath() %>/doctor/doctorLogin.jsp">Doctor</a>
+            <a href="<%= request.getContextPath() %>/Feedback/servlet/FeedbackListServlet">FeedBack</a>
+        </div>
     </div>
-</nav>
+</header>
 
-<!-- Main Content -->
-<!-- Main Content -->
-<div class="flex justify-center items-center h-[80vh]">
-    <div class="text-center space-y-6">
-        <h1 class="text-4xl font-bold text-mint-700">Welcome to MediCare</h1>
-        <p class="text-lg text-gray-600">Your trusted medical appointment scheduler</p>
+<main>
+    <h1>Your Trusted Medical Appointment System</h1>
+    <p>Streamline your healthcare experience with our comprehensive appointment scheduling platform.
+        Connect with top doctors, manage your health records, and receive personalized care - all in one place.</p>
 
-        <!-- Make Appointment Button -->
-        <a href="createUser.jsp" class="bg-mint-600 hover:bg-mint-500 text-white px-6 py-3 rounded-full flex items-center shadow-md justify-center w-fit mx-auto">
-            <i data-lucide="calendar-plus" class="w-5 h-5 mr-2"></i> Make Appointment
-        </a>
+    <div  type="submit">
+        <a href="<%= request.getContextPath() %>/appointment/addAppointment.jsp" class="primary-btn">Book Appointment</a>
     </div>
-</div>
+</main>
 
-<!-- Footer -->
-<footer class="bg-mint-100 text-center p-4 mt-12 text-mint-700">
-    <p>&copy; 2025 MediCare. All rights reserved.</p>
+<footer>
+    <p>&copy; 2025 MediCare|G14. All rights reserved.</p>
 </footer>
-
-<script>
-    lucide.createIcons();
-</script>
-
-<!-- Custom Mint Blue Theme -->
-<style>
-    :root {
-        --mint-50: #f0fdfa;
-        --mint-100: #ccfbf1;
-        --mint-200: #99f6e4;
-        --mint-300: #5eead4;
-        --mint-400: #2dd4bf;
-        --mint-500: #14b8a6;
-        --mint-600: #0d9488;
-        --mint-700: #0f766e;
-        --mint-800: #115e59;
-    }
-
-    .bg-mint-100 { background-color: var(--mint-100); }
-    .bg-mint-600 { background-color: var(--mint-600); }
-    .bg-mint-500:hover { background-color: var(--mint-500); }
-    .text-mint-700 { color: var(--mint-700); }
-    .text-mint-800 { color: var(--mint-800); }
-    .text-mint-600:hover { color: var(--mint-600); }
-    .border-mint-400 { border-color: var(--mint-400); }
-    .bg-mint-100:hover { background-color: var(--mint-100); }
-</style>
 </body>
 </html>
