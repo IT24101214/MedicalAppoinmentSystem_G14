@@ -37,7 +37,7 @@
             padding: 20px;
         }
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             background: white;
             padding: 20px;
@@ -78,6 +78,8 @@
     </style>
 </head>
 <body>
+<!-- Include the header from directory -->
+<jsp:include page="/header.jsp" />
 <div class="container">
     <h1>Schedule New Appointment</h1>
     <form action="addAppointment" method="POST">
