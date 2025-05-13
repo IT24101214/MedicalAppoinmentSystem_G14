@@ -93,6 +93,6 @@
         <a href="<%= request.getContextPath() %>/admin/login.jsp">Admin</a>
         <a href="<%= request.getContextPath() %>/doctor/doctorLogin.jsp">Doctor</a>
         <a href="<%= request.getContextPath() %>/payment/addPayment.jsp">Payment</a>
-        <a href="<%= request.getContextPath() %>/Feedback/servlet/FeedbackListServlet">Feedback</a>
+        <a href="<%= request.getContextPath() %>/feedback/addFeedback.jsp">Feedback</a>
     </div>
 </div>
