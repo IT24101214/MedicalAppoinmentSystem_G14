@@ -37,7 +37,7 @@
             padding: 20px;
         }
         .container {
-            max-width: 900px;
+            max-width: 800px;
             margin: 0 auto;
             background: white;
             padding: 20px;
