@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="MedicalAppointmentSchedulingSystem:Web exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/MedicalAppointmentSchedulingSystem_Web_exploded</output-path>
+    <root id="root">
+      <element id="dir-copy" path="$PROJECT_DIR$/src" />
+      <element id="dir-copy" path="$PROJECT_DIR$/src/main/webapp" />
+      <element id="dir-copy" path="$PROJECT_DIR$/src/main/java" />
+      <element id="dir-copy" path="$PROJECT_DIR$/data" />
+      <element id="artifact" artifact-name="MedicalAppointmentSchedulingSystem_:war exploded" />
+    </root>
+  </artifact>
+</component>

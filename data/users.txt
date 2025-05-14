@@ -1,2 +1,0 @@
-123456789012,password123,John Doe,john@example.com,1234567890
-987654321098,securePass456,Jane Smith,jane@example.com,0987654321
