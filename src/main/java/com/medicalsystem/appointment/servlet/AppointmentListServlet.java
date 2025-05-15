@@ -14,16 +14,19 @@ import java.util.List;
 
 @WebServlet("/appointments")
 public class AppointmentListServlet extends HttpServlet {
-    private final AppointmentManager appointmentManager = new AppointmentManager();
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        List<Appointment> sortedAppointments = appointmentManager.getSortedAppointments();
-        request.setAttribute("appointments", sortedAppointments);
+        String filePath = getServletContext().getRealPath("/WEB-INF/appointment.txt");
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/appointment.txt/appointmentList.jsp");
+        AppointmentManager appointmentManager = new AppointmentManager(filePath);
+        List<Appointment> sortedAppointments = appointmentManager.getSortedAppointments();
+
+        request.setAttribute("appointments", sortedAppointments);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/appointmentList.jsp");
         dispatcher.forward(request, response);
     }
 }
+
+

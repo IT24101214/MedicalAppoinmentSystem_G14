@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.medicalsystem.appointment.Appointment" %>
+<%@ page import="com.medicalsystem.patient.Patient" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,182 +9,96 @@
     <title>Appointment List - MediCare|G14</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        :root {
-            --primary: #3498db;
-            --secondary: #343f50;
-            --light: #ecf0f1;
-            --dark: #333;
-        }
-
-        * {
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            color: var(--dark);
-        }
-
-        header {
-            background: var(--secondary);
-            color: white;
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: white;
-        }
-
-        .logo span {
-            color: var(--primary);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            transition: background 0.3s, transform 0.2s;
-        }
-
-        .nav-links a:hover {
-            background: var(--primary);
-            border-radius: 4px;
-            transform: translateY(-2px);
         }
 
         .container {
-            flex: 1;
-            max-width: 1400px;
-            margin: 2rem auto;
-            padding: 20px;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            border-radius: 8px;
+            max-width: 95%;
+            margin: 40px auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 30px;
         }
 
         h1 {
-            color: var(--secondary);
-            margin-bottom: 1rem;
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 30px;
-            background: white;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-            font-size: 1.05rem;
-            border-radius: 8px;
-            overflow: hidden;
+            font-size: 15px;
+            background-color: white;
         }
 
-        th, td {
-            padding: 16px 20px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background: var(--primary);
+        thead tr {
+            background-color: #3498db;
             color: white;
         }
 
-        tr:nth-child(even) {
-            background-color: #f4f6f9;
+        th, td {
+            padding: 14px 12px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
         }
 
-        tr:hover {
-            background-color: #ecf0f1;
+        tbody tr:nth-child(even) {
+            background-color: #f2f6fc;
         }
 
-        .priority-high {
-            color: #e74c3c;
-            font-weight: bold;
+        tbody tr:hover {
+            background-color: #eaf2fd;
         }
 
-        .priority-medium {
-            color: #f39c12;
-        }
-
-        .priority-low {
-            color: #2ecc71;
-        }
-
-        .status-pending {
-            color: #f39c12;
-        }
-
-        .status-completed {
-            color: #2ecc71;
-        }
-
-        .status-cancelled {
-            color: #e74c3c;
+        select, input[type="text"] {
+            width: 95%;
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
         }
 
         .action-btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            padding: 6px 12px;
+            margin: 2px;
             font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s ease;
         }
 
         .btn-update {
-            background: #3498db;
+            background-color: #28a745;
             color: white;
         }
 
         .btn-update:hover {
-            background: #2980b9;
+            background-color: #218838;
         }
 
         .btn-cancel {
-            background: #e74c3c;
+            background-color: #dc3545;
             color: white;
         }
 
         .btn-cancel:hover {
-            background: #c0392b;
+            background-color: #c82333;
         }
 
-        footer {
-            background: var(--secondary);
-            color: white;
-            text-align: center;
-            padding: 0.5rem;
-            margin-top: auto;
-        }
-
-        @media (max-width: 768px) {
-            .navbar {
-                flex-direction: column;
-                gap: 1rem;
-            }
-        }
+        .priority-high { color: #e74c3c; font-weight: bold; }
+        .priority-medium { color: #f39c12; font-weight: bold; }
+        .priority-low { color: #27ae60; font-weight: bold; }
+        .status-pending { color: #6c757d; }
+        .status-completed { color: #28a745; font-weight: bold; }
+        .status-cancelled { color: #e74c3c; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -196,8 +111,10 @@
     <table>
         <thead>
         <tr>
-            <th>ID</th>
-            <th>Patient ID</th>
+            <th>Appointment ID</th>
+            <th>Patient Name</th>
+            <th>Gender</th>
+            <th>Phone</th>
             <th>Doctor ID</th>
             <th>Priority</th>
             <th>Reason</th>
@@ -210,37 +127,52 @@
             List<Appointment> appointments = (List<Appointment>) request.getAttribute("appointments");
             if (appointments != null) {
                 for (Appointment a : appointments) {
+                    Patient p = a.getPatient();
         %>
-        <tr>
-            <td><%= a.getAppointmentId() %></td>
-            <td><%= a.getPatientId() %></td>
-            <td><%= a.getDoctorId() %></td>
-            <td class="priority-<%= a.getPriority().toLowerCase() %>">
-                <%= a.getPriority() %>
-            </td>
-            <td><%= a.getReason() %></td>
-            <td class="status-<%= a.getStatus().toLowerCase() %>">
-                <%= a.getStatus() %>
-            </td>
-            <td>
-                <form action="updateAppointmentStatus" method="POST" style="display: inline;">
+        <form action="updateAppointment" method="POST">
+            <tr>
+                <td>
+                    <%= a.getAppointmentId() %>
                     <input type="hidden" name="appointmentId" value="<%= a.getAppointmentId() %>">
-                    <input type="hidden" name="status" value="Completed">
-                    <button type="submit" class="action-btn btn-update">Complete</button>
-                </form>
-                <form action="updateAppointmentStatus" method="POST" style="display: inline;">
-                    <input type="hidden" name="appointmentId" value="<%= a.getAppointmentId() %>">
-                    <input type="hidden" name="status" value="Cancelled">
-                    <button type="submit" class="action-btn btn-cancel">Cancel</button>
-                </form>
-            </td>
+                </td>
+                <td><%= p.getName() %></td>
+                <td><%= p.getGender() %></td>
+                <td><%= p.getPhone() %></td>
+                <td>
+                    <input type="text" name="doctorId" value="<%= a.getDoctorId() %>" required>
+                </td>
+                <td>
+                    <select name="priority">
+                        <option value="High" <%= "High".equals(a.getPriority()) ? "selected" : "" %>>High</option>
+                        <option value="Medium" <%= "Medium".equals(a.getPriority()) ? "selected" : "" %>>Medium</option>
+                        <option value="Low" <%= "Low".equals(a.getPriority()) ? "selected" : "" %>>Low</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" name="reason" value="<%= a.getReason() %>" required>
+                </td>
+                <td>
+                    <select name="status">
+                        <option value="Pending" <%= "Pending".equals(a.getStatus()) ? "selected" : "" %>>Pending</option>
+                        <option value="Completed" <%= "Completed".equals(a.getStatus()) ? "selected" : "" %>>Completed</option>
+                        <option value="Cancelled" <%= "Cancelled".equals(a.getStatus()) ? "selected" : "" %>>Cancelled</option>
+                    </select>
+                </td>
+                <td>
+                    <button type="submit" class="action-btn btn-update">Save</button>
+        </form>
+        <form action="deleteAppointment" method="POST" style="display:inline;" onsubmit="return confirm('Delete this appointment?');">
+            <input type="hidden" name="appointmentId" value="<%= a.getAppointmentId() %>">
+            <button type="submit" class="action-btn btn-cancel">Delete</button>
+        </form>
+        </td>
         </tr>
         <%
             }
         } else {
         %>
         <tr>
-            <td colspan="7" style="text-align:center;">No appointments found.</td>
+            <td colspan="9" style="text-align:center;">No appointments found.</td>
         </tr>
         <%
             }
@@ -250,7 +182,7 @@
 </div>
 
 <footer>
-    <p>&copy; 2025 MediCare|G14. All rights reserved.</p>
+    <p style="text-align:center; margin-top:30px;">&copy; 2025 MediCare|G14. All rights reserved.</p>
 </footer>
 </body>
 </html>
