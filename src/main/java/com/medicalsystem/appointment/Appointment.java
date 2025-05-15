@@ -1,17 +1,19 @@
 package com.medicalsystem.appointment;
 
+import com.medicalsystem.patient.Patient;
+
 public class Appointment implements Comparable<Appointment> {
     private String appointmentId;
-    private String patientId;
+    private Patient patient;  ///association relationship
     private String doctorId;
-    private String priority; // High, Medium, Low
+    private String priority;
     private String reason;
-    private String status; // Pending, Completed, Cancelled
+    private String status;
 
-    public Appointment(String appointmentId, String patientId, String doctorId,
+    public Appointment(String appointmentId, Patient patient, String doctorId,
                        String priority, String reason, String status) {
         this.appointmentId = appointmentId;
-        this.patientId = patientId;
+        this.patient = patient;
         this.doctorId = doctorId;
         this.priority = priority;
         this.reason = reason;
@@ -19,15 +21,13 @@ public class Appointment implements Comparable<Appointment> {
     }
 
     public String getAppointmentId() { return appointmentId; }
-    public String getPatientId() { return patientId; }
+    public Patient getPatient() { return patient; }
     public String getDoctorId() { return doctorId; }
     public String getPriority() { return priority; }
     public String getReason() { return reason; }
     public String getStatus() { return status; }
-
     public void setStatus(String status) { this.status = status; }
 
-    /// Priority-Queue based on urgency of patient
     @Override
     public int compareTo(Appointment o) {
         return getPriorityLevel(this.priority) - getPriorityLevel(o.priority);
@@ -40,5 +40,18 @@ public class Appointment implements Comparable<Appointment> {
             case "low": return 3;
             default: return 4;
         }
+    }
+
+    public String toFileString() {
+        return String.join(",",
+                appointmentId,
+                patient.getName(),
+                patient.getGender(),
+                patient.getPhone(),
+                doctorId,
+                priority,
+                reason,
+                status
+        );
     }
 }

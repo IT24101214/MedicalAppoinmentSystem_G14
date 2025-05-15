@@ -11,11 +11,7 @@
             padding: 1rem 2rem;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-
-        .logo span {
-            color: var(--primary);
-        }
-
+        .logo span { color: var(--primary); }
 
         .nav-links a {
             color: white;
@@ -24,7 +20,6 @@
             padding: 0.5rem 1rem;
             transition: background 0.3s, transform 0.2s;
         }
-
         .nav-links a:hover {
             background: var(--primary);
             border-radius: 4px;
@@ -78,8 +73,9 @@
     </style>
 </head>
 <body>
-<!-- Include the header from directory -->
+
 <jsp:include page="/header.jsp" />
+
 <div class="container">
     <h1>Schedule New Appointment</h1>
 
@@ -88,14 +84,29 @@
     <% } %>
 
     <form action="<%= request.getContextPath() %>/addAppointment" method="POST">
+
         <div class="form-group">
             <label for="appointmentId">Appointment ID</label>
             <input type="text" id="appointmentId" name="appointmentId" required>
         </div>
 
         <div class="form-group">
-            <label for="patientId">Patient ID</label>
-            <input type="text" id="patientId" name="patientId" required>
+            <label for="patientName">Patient Name</label>
+            <input type="text" id="patientName" name="patientName" required>
+        </div>
+
+        <div class="form-group">
+            <label for="gender">Patient Gender</label>
+            <select id="gender" name="gender" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Patient Phone</label>
+            <input type="text" id="phone" name="phone" required>
         </div>
 
         <div class="form-group">
@@ -120,5 +131,6 @@
         <button type="submit">Schedule Appointment</button>
     </form>
 </div>
+
 </body>
 </html>
