@@ -1,7 +1,7 @@
-package com.medicalsystem.appointment.servlet;
+package com.medicalsystem.Appointment.servlet;
 
-import com.medicalsystem.appointment.Appointment;
-import com.medicalsystem.appointment.AppointmentManager;
+import com.medicalsystem.Appointment.Appointment;
+import com.medicalsystem.Appointment.AppointmentManager;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -20,13 +20,13 @@ public class UpdateAppointmentStatusServlet extends HttpServlet {
         String appointmentId = request.getParameter("appointmentId");
         String newStatus = request.getParameter("status");
 
-        String filePath = getServletContext().getRealPath("/WEB-INF/appointment.txt");
+        String filePath = getServletContext().getRealPath("/data/appointments.txt");
         AppointmentManager manager = new AppointmentManager(filePath);
 
         // Load, update, save
         List<Appointment> appointments = manager.getSortedAppointments(); // loads from file
         for (Appointment a : appointments) {
-            if (a.getAppointmentId().equals(appointmentId)) {
+            if (a.getAppointmentID().equals(appointmentId)) {
                 a.setStatus(newStatus);
                 break;
             }

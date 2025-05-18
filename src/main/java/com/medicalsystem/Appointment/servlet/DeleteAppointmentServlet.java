@@ -1,7 +1,6 @@
-package com.medicalsystem.appointment.servlet;
+package com.medicalsystem.Appointment.servlet;
 
-import com.medicalsystem.appointment.Appointment;
-import com.medicalsystem.appointment.AppointmentManager;
+import com.medicalsystem.Appointment.AppointmentManager;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -26,7 +25,7 @@ public class DeleteAppointmentServlet extends HttpServlet {
             return;
         }
 
-        String appointmentFilePath = getServletContext().getRealPath("/WEB-INF/appointment.txt");
+        String appointmentFilePath = getServletContext().getRealPath("/data/appointments.txt");
         AppointmentManager appointmentManager = new AppointmentManager(appointmentFilePath);
 
         boolean deleted = appointmentManager.deleteAppointment(appointmentId);

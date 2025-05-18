@@ -1,7 +1,7 @@
-package com.medicalsystem.appointment.servlet;
+package com.medicalsystem.Appointment.servlet;
 
-import com.medicalsystem.appointment.Appointment;
-import com.medicalsystem.appointment.AppointmentManager;
+import com.medicalsystem.Appointment.Appointment;
+import com.medicalsystem.Appointment.AppointmentManager;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,21 +12,23 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/appointments")
+@WebServlet("/admin/appointmentList")
 public class AppointmentListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String filePath = getServletContext().getRealPath("/WEB-INF/appointment.txt");
+        String filePath = "/data/appointments.txt";
 
         AppointmentManager appointmentManager = new AppointmentManager(filePath);
         List<Appointment> sortedAppointments = appointmentManager.getSortedAppointments();
 
+
         request.setAttribute("appointments", sortedAppointments);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/appointmentList.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/appointmentList.jsp");
         dispatcher.forward(request, response);
     }
 }
+
 
 

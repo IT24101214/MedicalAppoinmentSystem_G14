@@ -1,28 +1,29 @@
-package com.medicalsystem.appointment;
+package com.medicalsystem.Appointment;
 
-import com.medicalsystem.patient.Patient;
+import com.medicalsystem.Doctor.Doctor;
+import com.medicalsystem.Patient.Patient;
 
 public class Appointment implements Comparable<Appointment> {
-    private String appointmentId;
-    private Patient patient;  ///association relationship
-    private String doctorId;
+    private String appointmentID;
+    private Patient patient;       // association
+    private Doctor doctor;         // single Doctor object
     private String priority;
     private String reason;
     private String status;
 
-    public Appointment(String appointmentId, Patient patient, String doctorId,
+    public Appointment(String appointmentID, Patient patient, Doctor doctor,
                        String priority, String reason, String status) {
-        this.appointmentId = appointmentId;
+        this.appointmentID = appointmentID;
         this.patient = patient;
-        this.doctorId = doctorId;
+        this.doctor = doctor;
         this.priority = priority;
         this.reason = reason;
         this.status = status;
     }
 
-    public String getAppointmentId() { return appointmentId; }
+    public String getAppointmentID() { return appointmentID; }
     public Patient getPatient() { return patient; }
-    public String getDoctorId() { return doctorId; }
+    public Doctor getDoctor() { return doctor; }
     public String getPriority() { return priority; }
     public String getReason() { return reason; }
     public String getStatus() { return status; }
@@ -42,13 +43,24 @@ public class Appointment implements Comparable<Appointment> {
         }
     }
 
+    private int getSpecializationLevel(String specialization) {
+        switch (specialization.toLowerCase()) {
+            case "cardiology": return 1;
+            case "neurology": return 2;
+            case "dermatology": return 3;
+            case "pediatrics": return 4;
+            default: return 5;
+        }
+    }
+
     public String toFileString() {
         return String.join(",",
-                appointmentId,
+                appointmentID,
                 patient.getName(),
                 patient.getGender(),
                 patient.getPhone(),
-                doctorId,
+                doctor.getId(),
+                doctor.getSpecialization(),
                 priority,
                 reason,
                 status

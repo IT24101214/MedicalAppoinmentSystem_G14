@@ -1,188 +1,124 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
-<%@ page import="com.medicalsystem.appointment.Appointment" %>
-<%@ page import="com.medicalsystem.patient.Patient" %>
+<%@ page import="com.medicalsystem.Appointment.Appointment" %>
+<%@ page import="com.medicalsystem.Patient.Patient" %>
+<%@ page import="com.medicalsystem.Doctor.Doctor" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Appointment List - MediCare|G14</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 0;
+            background-color: #f8f9fa;
         }
-
         .container {
-            max-width: 95%;
-            margin: 40px auto;
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            padding: 30px;
+            margin-top: 40px;
         }
-
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 30px;
+        .table-responsive {
+            max-height: 600px;
+            overflow-y: auto;
         }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 15px;
-            background-color: white;
-        }
-
-        thead tr {
-            background-color: #3498db;
-            color: white;
-        }
-
-        th, td {
-            padding: 14px 12px;
-            text-align: center;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        tbody tr:nth-child(even) {
-            background-color: #f2f6fc;
-        }
-
-        tbody tr:hover {
-            background-color: #eaf2fd;
-        }
-
-        select, input[type="text"] {
-            width: 95%;
-            padding: 6px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-        }
-
-        .action-btn {
-            padding: 6px 12px;
-            margin: 2px;
-            font-weight: bold;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
+        .form-control, .form-select {
             font-size: 14px;
-            transition: background-color 0.2s ease;
+            padding: 0.375rem 0.5rem;
         }
-
-        .btn-update {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .btn-update:hover {
-            background-color: #218838;
-        }
-
-        .btn-cancel {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .btn-cancel:hover {
-            background-color: #c82333;
-        }
-
-        .priority-high { color: #e74c3c; font-weight: bold; }
-        .priority-medium { color: #f39c12; font-weight: bold; }
-        .priority-low { color: #27ae60; font-weight: bold; }
-        .status-pending { color: #6c757d; }
-        .status-completed { color: #28a745; font-weight: bold; }
-        .status-cancelled { color: #e74c3c; font-weight: bold; }
     </style>
 </head>
 <body>
-<header>
-    <jsp:include page="/header.jsp" />
-</header>
+
+<jsp:include page="/header.jsp" />
 
 <div class="container">
-    <h1>Appointment Management</h1>
-    <table>
-        <thead>
-        <tr>
-            <th>Appointment ID</th>
-            <th>Patient Name</th>
-            <th>Gender</th>
-            <th>Phone</th>
-            <th>Doctor ID</th>
-            <th>Priority</th>
-            <th>Reason</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <%
-            List<Appointment> appointments = (List<Appointment>) request.getAttribute("appointments");
-            if (appointments != null) {
-                for (Appointment a : appointments) {
-                    Patient p = a.getPatient();
-        %>
-        <form action="updateAppointment" method="POST">
+    <h2 class="text-center mb-4 text-primary">Appointment Management</h2>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-primary text-center">
             <tr>
-                <td>
-                    <%= a.getAppointmentId() %>
-                    <input type="hidden" name="appointmentId" value="<%= a.getAppointmentId() %>">
+                <th>Appointment ID</th>
+                <th>Patient Name</th>
+                <th>Gender</th>
+                <th>Phone</th>
+                <th>Doctor ID</th>
+                <th>Specialization</th>
+                <th>Priority</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <%
+                List<Appointment> appointments = (List<Appointment>) request.getAttribute("appointments");
+                if (appointments != null && !appointments.isEmpty()) {
+                    for (Appointment a : appointments) {
+            %>
+            <tr>
+                <form action="updateAppointment" method="POST">
+                    <td>
+                        <%= a.getAppointmentID() %>
+                        <input type="hidden" name="appointmentId" value="<%= a.getAppointmentID() %>">
+                    </td>
+                    <td><%= a.getPatient().getName() %></td>
+                    <td><%= a.getPatient().getGender() %></td>
+                    <td><%= a.getPatient().getPhone() %></td>
+                    <td>
+                        <input type="text" class="form-control" name="doctorId" value="<%= a.getDoctor().getId() %>" required>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" name="specialization" value="<%= a.getDoctor().getSpecialization() %>" required>
+                    </td>
+                    <td>
+                        <select name="priority" class="form-select">
+                            <option value="High" <%= "High".equals(a.getPriority()) ? "selected" : "" %>>High</option>
+                            <option value="Medium" <%= "Medium".equals(a.getPriority()) ? "selected" : "" %>>Medium</option>
+                            <option value="Low" <%= "Low".equals(a.getPriority()) ? "selected" : "" %>>Low</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" name="reason" value="<%= a.getReason() %>" required>
+                    </td>
+                    <td>
+                        <select name="status" class="form-select">
+                            <option value="Pending" <%= "Pending".equals(a.getStatus()) ? "selected" : "" %>>Pending</option>
+                            <option value="Completed" <%= "Completed".equals(a.getStatus()) ? "selected" : "" %>>Completed</option>
+                            <option value="Cancelled" <%= "Cancelled".equals(a.getStatus()) ? "selected" : "" %>>Cancelled</option>
+                        </select>
+                    </td>
+                    <td class="text-nowrap">
+                        <button type="submit" class="btn btn-success btn-sm me-1">Save</button>
+                </form>
+                <form action="deleteAppointment" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this appointment?');">
+                    <input type="hidden" name="appointmentId" value="<%= a.getAppointmentID() %>">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
                 </td>
-                <td><%= p.getName() %></td>
-                <td><%= p.getGender() %></td>
-                <td><%= p.getPhone() %></td>
-                <td>
-                    <input type="text" name="doctorId" value="<%= a.getDoctorId() %>" required>
-                </td>
-                <td>
-                    <select name="priority">
-                        <option value="High" <%= "High".equals(a.getPriority()) ? "selected" : "" %>>High</option>
-                        <option value="Medium" <%= "Medium".equals(a.getPriority()) ? "selected" : "" %>>Medium</option>
-                        <option value="Low" <%= "Low".equals(a.getPriority()) ? "selected" : "" %>>Low</option>
-                    </select>
-                </td>
-                <td>
-                    <input type="text" name="reason" value="<%= a.getReason() %>" required>
-                </td>
-                <td>
-                    <select name="status">
-                        <option value="Pending" <%= "Pending".equals(a.getStatus()) ? "selected" : "" %>>Pending</option>
-                        <option value="Completed" <%= "Completed".equals(a.getStatus()) ? "selected" : "" %>>Completed</option>
-                        <option value="Cancelled" <%= "Cancelled".equals(a.getStatus()) ? "selected" : "" %>>Cancelled</option>
-                    </select>
-                </td>
-                <td>
-                    <button type="submit" class="action-btn btn-update">Save</button>
-        </form>
-        <form action="deleteAppointment" method="POST" style="display:inline;" onsubmit="return confirm('Delete this appointment?');">
-            <input type="hidden" name="appointmentId" value="<%= a.getAppointmentId() %>">
-            <button type="submit" class="action-btn btn-cancel">Delete</button>
-        </form>
-        </td>
-        </tr>
-        <%
-            }
-        } else {
-        %>
-        <tr>
-            <td colspan="9" style="text-align:center;">No appointments found.</td>
-        </tr>
-        <%
-            }
-        %>
-        </tbody>
-    </table>
+            </tr>
+            <%
+                }
+            } else {
+            %>
+            <tr>
+                <td colspan="10" class="text-center text-muted">No appointments found.</td>
+            </tr>
+            <%
+                }
+            %>
+            </tbody>
+        </table>
+    </div>
 </div>
 
-<footer>
-    <p style="text-align:center; margin-top:30px;">&copy; 2025 MediCare|G14. All rights reserved.</p>
+<footer class="text-center mt-5 mb-3 text-muted">
+    &copy; 2025 MediCare | G14. All rights reserved.
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
