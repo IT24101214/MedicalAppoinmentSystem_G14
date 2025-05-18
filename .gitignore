@@ -36,3 +36,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Local data folder (not pushed to GitHub) ###
+/project_data/

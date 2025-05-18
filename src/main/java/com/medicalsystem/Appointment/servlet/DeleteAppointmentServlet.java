@@ -25,8 +25,7 @@ public class DeleteAppointmentServlet extends HttpServlet {
             return;
         }
 
-        String appointmentFilePath = getServletContext().getRealPath("/data/appointments.txt");
-        AppointmentManager appointmentManager = new AppointmentManager(appointmentFilePath);
+        AppointmentManager appointmentManager = new AppointmentManager();
 
         boolean deleted = appointmentManager.deleteAppointment(appointmentId);
 
@@ -42,3 +41,4 @@ public class DeleteAppointmentServlet extends HttpServlet {
     }
 }
 
+/// used to delete individual appointment records

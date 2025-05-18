@@ -18,9 +18,7 @@ public class AppointmentListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String filePath = "/data/appointments.txt";
-
-        AppointmentManager appointmentManager = new AppointmentManager(filePath);
+        AppointmentManager appointmentManager = new AppointmentManager();
         List<Appointment> sortedAppointments = appointmentManager.getSortedAppointments();
 
 

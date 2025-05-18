@@ -2,6 +2,8 @@ package com.medicalsystem.Appointment.servlet;
 
 import com.medicalsystem.Appointment.Appointment;
 import com.medicalsystem.Appointment.AppointmentManager;
+import com.medicalsystem.Doctor.Doctor;
+import com.medicalsystem.Patient.Patient;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,30 +11,44 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet("/updateAppointmentStatus")
+@WebServlet("/updateAppointment")
 public class UpdateAppointmentStatusServlet extends HttpServlet {
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String appointmentId = request.getParameter("appointmentId");
-        String newStatus = request.getParameter("status");
+        String doctorId = request.getParameter("doctorId");
+        String specialization = request.getParameter("specialization");
+        String priority = request.getParameter("priority");
+        String reason = request.getParameter("reason");
+        String status = request.getParameter("status");
 
-        String filePath = getServletContext().getRealPath("/data/appointments.txt");
-        AppointmentManager manager = new AppointmentManager(filePath);
+        AppointmentManager appointmentManager = new AppointmentManager();
 
-        // Load, update, save
-        List<Appointment> appointments = manager.getSortedAppointments(); // loads from file
-        for (Appointment a : appointments) {
-            if (a.getAppointmentID().equals(appointmentId)) {
-                a.setStatus(newStatus);
-                break;
-            }
+        // Get existing appointment
+        Appointment appointment = appointmentManager.findAppointmentById(appointmentId);
+        if (appointment == null) {
+            request.setAttribute("error", "Appointment not found.");
+            request.getRequestDispatcher("/admin/appointmentList.jsp").forward(request, response);
+            return;
         }
 
-        manager.updateAppointments(appointments); // implement this in AppointmentManager
-        response.sendRedirect("appointments");
+        // Update fields
+        Doctor updatedDoctor = new Doctor(doctorId, specialization);
+        appointment.setStatus(status);
+        appointment.setReason(reason);
+        appointment.setPriority(priority);
+        appointment.setDoctor(updatedDoctor);
+
+        // Save back to file
+        appointmentManager.updateAppointment(appointment);
+
+        // Redirect or forward
+        request.setAttribute("success", "Appointment updated successfully.");
+        request.setAttribute("appointments", appointmentManager.getSortedAppointments());
+        request.getRequestDispatcher("/admin/appointmentList.jsp").forward(request, response);
     }
 }

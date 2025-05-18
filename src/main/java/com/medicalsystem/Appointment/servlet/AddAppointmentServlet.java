@@ -5,17 +5,18 @@ import com.medicalsystem.Appointment.AppointmentManager;
 import com.medicalsystem.Patient.Patient;
 import com.medicalsystem.Patient.PatientManager;
 import com.medicalsystem.Doctor.Doctor;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-
 import java.io.IOException;
 
 @WebServlet("/addAppointment")
 public class AddAppointmentServlet extends HttpServlet {
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -32,24 +33,18 @@ public class AddAppointmentServlet extends HttpServlet {
 
         // Store patient
         Patient patient = new Patient(name, gender, phone);
-        String patientFilePath = getServletContext().getRealPath("/data/patients.txt");
-        PatientManager patientManager = new PatientManager(patientFilePath);
+        PatientManager patientManager = new PatientManager(); // no path needed now
         patientManager.addPatient(patient);
 
         // Store appointment
-        String appointmentFilePath = getServletContext().getRealPath("/data/appointments.txt");
-        AppointmentManager appointmentManager = new AppointmentManager(appointmentFilePath);
-        System.out.println("Resolved path: " + appointmentFilePath);
-
-        Doctor doctor = new Doctor(doctorId, specialization); //  doctor object
-
-        String appointmentId = appointmentManager.generateAppointmentId(); // Auto-generate of appointmentID
+        AppointmentManager appointmentManager = new AppointmentManager(); // no path needed now
+        String appointmentId = appointmentManager.generateAppointmentId();
+        Doctor doctor = new Doctor(doctorId, specialization);
         Appointment appointment = new Appointment(appointmentId, patient, doctor, priority, reason, status);
         appointmentManager.addAppointment(appointment);
 
         // Show success
-        request.setAttribute("success", "Appointment added Successfully!");
+        request.setAttribute("success", "Appointment Added Successfully!");
         request.getRequestDispatcher("/appointment/addAppointment.jsp").forward(request, response);
     }
 }
-

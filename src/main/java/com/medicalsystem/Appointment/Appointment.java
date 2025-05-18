@@ -28,6 +28,10 @@ public class Appointment implements Comparable<Appointment> {
     public String getReason() { return reason; }
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+    public void setDoctor(Doctor doctor) { this.doctor = doctor; }
+    public void setPriority(String priority) { this.priority = priority; }
+    public void setReason(String reason) { this.reason = reason; }
+
 
     @Override
     public int compareTo(Appointment o) {
