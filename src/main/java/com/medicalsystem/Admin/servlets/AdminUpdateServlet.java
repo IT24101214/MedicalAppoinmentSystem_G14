@@ -1,9 +1,5 @@
 package com.medicalsystem.Admin.servlets;
 
-
-import com.medicalsystem.Admin.model.Admin;
-import utils.FileHandler;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,6 +7,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+
+import com.medicalsystem.Admin.model.Admin;
+import com.medicalsystem.Admin.utils.FileHandler;
 
 @WebServlet("/AdminUpdateServlet")
 public class AdminUpdateServlet extends HttpServlet {
@@ -153,3 +152,4 @@ public class AdminUpdateServlet extends HttpServlet {
         }
     }
 }
+

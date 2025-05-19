@@ -1,7 +1,7 @@
 package com.medicalsystem.Admin.servlets;
 
 import com.medicalsystem.Admin.model.Admin;
-import utils.FileHandler;
+import com.medicalsystem.Admin.utils.FileHandler;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

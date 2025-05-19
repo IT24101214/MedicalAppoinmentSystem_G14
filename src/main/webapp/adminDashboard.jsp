@@ -363,7 +363,7 @@
 <header class="header">
     <a href="adminDashboard.jsp" class="logo">MediCare</a>
     <div class="nav-links">
-        <a href="adminDashboard.jsp" class="nav-link">Home</a>
+        <a href="index.html" class="nav-link">Home</a>
         <a href="admin" class="nav-link">Admin</a>
         <a href="doctor" class="nav-link">Doctor</a>
     </div>
@@ -562,33 +562,6 @@
             icon.style.transform = 'scale(1)';
         });
     });
-
-    // Add ripple effect to sidebar items
-    function createRipple(event) {
-        const button = event.currentTarget;
-
-        const circle = document.createElement("span");
-        const diameter = Math.max(button.clientWidth, button.clientHeight);
-        const radius = diameter / 2;
-
-        circle.style.width = circle.style.height = `${diameter}px`;
-        circle.style.left = `${event.clientX - button.getBoundingClientRect().left - radius}px`;
-        circle.style.top = `${event.clientY - button.getBoundingClientRect().top - radius}px`;
-        circle.classList.add("ripple");
-
-        const ripple = button.getElementsByClassName("ripple")[0];
-
-        if (ripple) {
-            ripple.remove();
-        }
-
-        button.appendChild(circle);
-    }
-
-    const buttons = document.querySelectorAll(".sidebar-item");
-    for (const button of buttons) {
-        button.addEventListener("mousedown", createRipple);
-    }
 
     // Animation for cards on scroll
     document.addEventListener('DOMContentLoaded', function() {

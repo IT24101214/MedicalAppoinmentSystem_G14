@@ -1,4 +1,4 @@
-package utils;
+package com.medicalsystem.Admin.utils;
 
 import com.medicalsystem.Admin.model.Admin;
 
