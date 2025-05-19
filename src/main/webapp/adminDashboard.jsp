@@ -1,7 +1,141 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.io.BufferedReader" %>
+<%@ page import="java.io.FileReader" %>
+<%@ page import="java.time.LocalDate" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.ParseException" %>
 <%@ page import="com.medicalsystem.Admin.model.Admin" %>
 
+<%!
+    // Helper function to count lines in a file
+    private int countRecords(String filePath, ServletContext context) {
+        int count = 0;
+        String realPath = context.getRealPath(filePath);
+
+        try (BufferedReader br = new BufferedReader(new FileReader(realPath))) {
+            while (br.readLine() != null) {
+                count++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    // Helper function to calculate total revenue for the current month
+    private double calculateMonthlyRevenue(String filePath, ServletContext context) {
+        double total = 0.0;
+        String realPath = context.getRealPath(filePath);
+        LocalDate now = LocalDate.now();
+        int currentMonth = now.getMonthValue();
+        int currentYear = now.getYear();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(realPath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length >= 3) { // Assuming format: ID,Date,Amount,...
+                    try {
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        Date date = dateFormat.parse(parts[1]);
+                        SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
+                        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+                        int month = Integer.parseInt(monthFormat.format(date));
+                        int year = Integer.parseInt(yearFormat.format(date));
+
+                        if (month == currentMonth && year == currentYear) {
+                            total += Double.parseDouble(parts[2]);
+                        }
+                    } catch (ParseException | NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return total;
+    }
+
+    // Helper function to count today's appointments
+    private int countTodayAppointments(String filePath, ServletContext context) {
+        int count = 0;
+        String realPath = context.getRealPath(filePath);
+        LocalDate today = LocalDate.now();
+        String todayString = today.toString(); // Format: YYYY-MM-DD
+
+        try (BufferedReader br = new BufferedReader(new FileReader(realPath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length >= 2) { // Assuming date is in the second position
+                    if (parts[1].startsWith(todayString)) {
+                        count++;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    // Helper class to store appointment data
+    class AppointmentData {
+        String patient;
+        String doctor;
+        String dateTime;
+        String department;
+        String status;
+
+        public AppointmentData(String patient, String doctor, String dateTime, String department, String status) {
+            this.patient = patient;
+            this.doctor = doctor;
+            this.dateTime = dateTime;
+            this.department = department;
+            this.status = status;
+        }
+    }
+
+    // Helper function to get recent appointments
+    private List<AppointmentData> getRecentAppointments(String filePath, ServletContext context, int limit) {
+        List<AppointmentData> appointments = new ArrayList<>();
+        String realPath = context.getRealPath(filePath);
+
+        try (BufferedReader br = new BufferedReader(new FileReader(realPath))) {
+            String line;
+            int count = 0;
+            while ((line = br.readLine()) != null && count < limit) {
+                String[] parts = line.split(",");
+                if (parts.length >= 5) { // Assuming format: Patient,DateTime,Doctor,Department,Status
+                    String patient = parts[0];
+                    String dateTime = parts[1];
+                    String doctor = parts[2];
+                    String department = parts[3];
+                    String status = parts[4];
+
+                    appointments.add(new AppointmentData(patient, doctor, dateTime, department, status));
+                    count++;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return appointments;
+    }
+%>
+
+<%
+    // Get real data from files
+    int totalDoctors = countRecords("/WEB-INF/data/doctor.txt", application);
+    int totalPatients = countRecords("/WEB-INF/data/patience.txt", application);
+    int todayAppointments = countTodayAppointments("/WEB-INF/data/appointment.txt", application);
+    double monthlyRevenue = calculateMonthlyRevenue("/WEB-INF/data/payment.txt", application);
+    List<AppointmentData> recentAppointments = getRecentAppointments("/WEB-INF/data/appointment.txt", application, 5);
+%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -122,6 +256,7 @@
             padding: 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
         }
 
         .card:hover {
@@ -363,9 +498,9 @@
 <header class="header">
     <a href="adminDashboard.jsp" class="logo">MediCare</a>
     <div class="nav-links">
-        <a href="index.html" class="nav-link">Home</a>
+        <a href="Home.jsp" class="nav-link">Home</a>
         <a href="admin" class="nav-link">Admin</a>
-        <a href="doctor" class="nav-link">Doctor</a>
+        <a href="doctorLogin.jsp" class="nav-link">Doctor</a>
     </div>
 </header>
 
@@ -381,43 +516,43 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="sidebar-item">
+                <a href="appointmentList.jsp" class="sidebar-item">
                     <i class="fas fa-calendar-alt"></i>
                     <span>Appointment</span>
                 </a>
             </li>
             <li>
-                <a href="#" class="sidebar-item">
+                <a href="doctorSchedules.jsp" class="sidebar-item">
                     <i class="fas fa-user-md"></i>
                     <span>Doctor Schedules</span>
                 </a>
             </li>
             <li>
-                <a href="#" class="sidebar-item">
+                <a href="addDoctorSchedule.jsp" class="sidebar-item">
                     <i class="fas fa-plus-circle"></i>
                     <span>Add Doctor Schedule</span>
                 </a>
             </li>
             <li>
-                <a href="#" class="sidebar-item">
+                <a href="addDoctor.jsp" class="sidebar-item">
                     <i class="fas fa-user-plus"></i>
                     <span>Add Doctor</span>
                 </a>
             </li>
             <li>
-                <a href="#" class="sidebar-item">
+                <a href="paymentList.jsp" class="sidebar-item">
                     <i class="fas fa-credit-card"></i>
                     <span>Payments</span>
                 </a>
             </li>
             <li>
-                <a href="#" class="sidebar-item">
+                <a href="feedback.jsp" class="sidebar-item">
                     <i class="fas fa-comment"></i>
                     <span>Feedback</span>
                 </a>
             </li>
             <li>
-                <a href="index.jsp" class="sidebar-item">
+                <a href="RegisterAdmin.jsp" class="sidebar-item">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Logout</span>
                 </a>
@@ -434,53 +569,53 @@
                 <p>Text under admin</p>
             </div>
             <div class="welcome-image">
-                <img src="D:\UNI\Y2S2\OOP Project\7355082.png">
+                <img src="${pageContext.request.contextPath}/resources/images/admin_dashboard.png" alt="Admin Dashboard">
             </div>
         </div>
 
         <!-- Dashboard Cards -->
         <div class="dashboard-cards">
-            <div class="card">
+            <div class="card" onclick="location.href='doctorList.jsp';">
                 <div class="card-header">
                     <div class="card-title">Total Doctors</div>
                     <div class="card-icon">
                         <i class="fas fa-user-md"></i>
                     </div>
                 </div>
-                <div class="card-value">42</div>
+                <div class="card-value"><%= totalDoctors %></div>
                 <div class="card-description">Active medical professionals</div>
             </div>
 
-            <div class="card">
+            <div class="card" onclick="location.href='patientList.jsp';">
                 <div class="card-header">
                     <div class="card-title">Total Patients</div>
                     <div class="card-icon">
                         <i class="fas fa-users"></i>
                     </div>
                 </div>
-                <div class="card-value">1,248</div>
+                <div class="card-value"><%= totalPatients %></div>
                 <div class="card-description">Registered in the system</div>
             </div>
 
-            <div class="card">
+            <div class="card" onclick="location.href='appointmentList.jsp';">
                 <div class="card-header">
                     <div class="card-title">Today's Appointments</div>
                     <div class="card-icon">
                         <i class="fas fa-calendar-check"></i>
                     </div>
                 </div>
-                <div class="card-value">28</div>
+                <div class="card-value"><%= todayAppointments %></div>
                 <div class="card-description">Scheduled for today</div>
             </div>
 
-            <div class="card">
+            <div class="card" onclick="location.href='paymentList.jsp';">
                 <div class="card-header">
                     <div class="card-title">Monthly Revenue</div>
                     <div class="card-icon">
                         <i class="fas fa-dollar-sign"></i>
                     </div>
                 </div>
-                <div class="card-value">$38,450</div>
+                <div class="card-value">$<%= String.format("%.2f", monthlyRevenue) %></div>
                 <div class="card-description">For the current month</div>
             </div>
         </div>
@@ -488,7 +623,7 @@
         <!-- Recent Activity Section -->
         <div class="section-header">
             <div class="section-title">Recent Appointments</div>
-            <a href="#" class="section-action">View All</a>
+            <a href="appointmentList.jsp" class="section-action">View All</a>
         </div>
 
         <table class="activity-table">
@@ -502,41 +637,22 @@
             </tr>
             </thead>
             <tbody>
+            <% for(AppointmentData appointment : recentAppointments) { %>
             <tr>
-                <td>John Smith</td>
-                <td>Dr. Sarah Johnson</td>
-                <td>May 14, 2025 - 10:00 AM</td>
-                <td>Cardiology</td>
-                <td><span class="activity-status status-completed">Completed</span></td>
+                <td><%= appointment.patient %></td>
+                <td><%= appointment.doctor %></td>
+                <td><%= appointment.dateTime %></td>
+                <td><%= appointment.department %></td>
+                <td>
+                        <span class="activity-status
+                            <%= appointment.status.equalsIgnoreCase("completed") ? "status-completed" :
+                               appointment.status.equalsIgnoreCase("pending") ? "status-pending" :
+                               "status-cancelled" %>">
+                            <%= appointment.status %>
+                        </span>
+                </td>
             </tr>
-            <tr>
-                <td>Emily Davis</td>
-                <td>Dr. Michael Lee</td>
-                <td>May 14, 2025 - 11:30 AM</td>
-                <td>Neurology</td>
-                <td><span class="activity-status status-pending">Pending</span></td>
-            </tr>
-            <tr>
-                <td>Robert Wilson</td>
-                <td>Dr. Lisa Taylor</td>
-                <td>May 14, 2025 - 2:15 PM</td>
-                <td>Orthopedics</td>
-                <td><span class="activity-status status-pending">Pending</span></td>
-            </tr>
-            <tr>
-                <td>Sophia Martinez</td>
-                <td>Dr. James Anderson</td>
-                <td>May 14, 2025 - 3:45 PM</td>
-                <td>Pediatrics</td>
-                <td><span class="activity-status status-cancelled">Cancelled</span></td>
-            </tr>
-            <tr>
-                <td>William Brown</td>
-                <td>Dr. Emma White</td>
-                <td>May 15, 2025 - 9:00 AM</td>
-                <td>Dermatology</td>
-                <td><span class="activity-status status-pending">Pending</span></td>
-            </tr>
+            <% } %>
             </tbody>
         </table>
     </div>
@@ -548,7 +664,6 @@
 </footer>
 
 <script>
-
     // Sidebar hover animation
     const sidebarItems = document.querySelectorAll('.sidebar-item');
     sidebarItems.forEach(item => {
