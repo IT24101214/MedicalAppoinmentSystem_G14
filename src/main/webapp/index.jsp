@@ -159,13 +159,13 @@
 </head>
 <body>
 <header>
-    <a href="#" class="logo">MediCare</a>
+    <a href="index.jsp" class="logo">MediCare</a>
     <nav>
-        <a href="#">Home</a>
-        <a href="AdminDashboard2.html">Admin</a>
-        <a href="#">Doctor</a>
-        <a href="#">Payment</a>
-        <a href="#">Feedback</a>
+        <a href="index.jsp">Home</a>
+        <a href="AdminLogin.jsp">Admin</a>
+        <a href="doctorDashboard.jsp">Doctor</a>
+        <a href="addPayment.jsp">Payment</a>
+        <a href="feedbackList.jsp">Feedback</a>
     </nav>
 </header>
 
@@ -174,7 +174,7 @@
         <h1 class="hero-title animate-title">Your Health, Just a Click Away</h1>
     </div>
     <p class="hero-subtitle animate-subtitle">Streamline your healthcare experience with our all-in-one appointment scheduling platform. Connect with doctors, manage your health records, and receive personalized care — all in one place</p>
-    <button class="cta-btn animate-btn">BOOK APPOINTMENT</button>
+    <button class="cta-btn animate-btn" onclick="window.location.href='appointment.jsp'">BOOK APPOINTMENT</button>
 </main>
 
 <footer>

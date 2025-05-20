@@ -3,22 +3,42 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.io.BufferedReader" %>
 <%@ page import="java.io.FileReader" %>
+<%@ page import="java.io.File" %>
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.ParseException" %>
 <%@ page import="com.medicalsystem.Admin.model.Admin" %>
 
+<%
+    // Session check - ensure user is logged in
+    Admin currentAdmin = (Admin) session.getAttribute("currentAdmin");
+    if (currentAdmin == null) {
+        response.sendRedirect("AdminLogin.jsp");
+        return;
+    }
+%>
+
 <%!
     // Helper function to count lines in a file
     private int countRecords(String filePath, ServletContext context) {
         int count = 0;
-        String realPath = context.getRealPath(filePath);
-
-        try (BufferedReader br = new BufferedReader(new FileReader(realPath))) {
-            while (br.readLine() != null) {
-                count++;
+        try {
+            String realPath = context.getRealPath(filePath);
+            if (realPath == null) {
+                return 0;
             }
+            
+            File file = new File(realPath);
+            if (!file.exists()) {
+                return 0;
+            }
+
+            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                while (br.readLine() != null) {
+                    count++;
+                }
+            } 
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -28,29 +48,40 @@
     // Helper function to calculate total revenue for the current month
     private double calculateMonthlyRevenue(String filePath, ServletContext context) {
         double total = 0.0;
-        String realPath = context.getRealPath(filePath);
-        LocalDate now = LocalDate.now();
-        int currentMonth = now.getMonthValue();
-        int currentYear = now.getYear();
+        try {
+            String realPath = context.getRealPath(filePath);
+            if (realPath == null) {
+                return 0.0;
+            }
+            
+            File file = new File(realPath);
+            if (!file.exists()) {
+                return 0.0;
+            }
+            
+            LocalDate now = LocalDate.now();
+            int currentMonth = now.getMonthValue();
+            int currentYear = now.getYear();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(realPath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length >= 3) { // Assuming format: ID,Date,Amount,...
-                    try {
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                        Date date = dateFormat.parse(parts[1]);
-                        SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
-                        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
-                        int month = Integer.parseInt(monthFormat.format(date));
-                        int year = Integer.parseInt(yearFormat.format(date));
+            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] parts = line.split(",");
+                    if (parts.length >= 3) { // Assuming format: ID,Date,Amount,...
+                        try {
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                            Date date = dateFormat.parse(parts[1]);
+                            SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
+                            SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+                            int month = Integer.parseInt(monthFormat.format(date));
+                            int year = Integer.parseInt(yearFormat.format(date));
 
-                        if (month == currentMonth && year == currentYear) {
-                            total += Double.parseDouble(parts[2]);
+                            if (month == currentMonth && year == currentYear) {
+                                total += Double.parseDouble(parts[2]);
+                            }
+                        } catch (ParseException | NumberFormatException e) {
+                            e.printStackTrace();
                         }
-                    } catch (ParseException | NumberFormatException e) {
-                        e.printStackTrace();
                     }
                 }
             }
@@ -63,17 +94,28 @@
     // Helper function to count today's appointments
     private int countTodayAppointments(String filePath, ServletContext context) {
         int count = 0;
-        String realPath = context.getRealPath(filePath);
-        LocalDate today = LocalDate.now();
-        String todayString = today.toString(); // Format: YYYY-MM-DD
+        try {
+            String realPath = context.getRealPath(filePath);
+            if (realPath == null) {
+                return 0;
+            }
+            
+            File file = new File(realPath);
+            if (!file.exists()) {
+                return 0;
+            }
+            
+            LocalDate today = LocalDate.now();
+            String todayString = today.toString(); // Format: YYYY-MM-DD
 
-        try (BufferedReader br = new BufferedReader(new FileReader(realPath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length >= 2) { // Assuming date is in the second position
-                    if (parts[1].startsWith(todayString)) {
-                        count++;
+            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] parts = line.split(",");
+                    if (parts.length >= 2) { // Assuming date is in the second position
+                        if (parts[1].startsWith(todayString)) {
+                            count++;
+                        }
                     }
                 }
             }
@@ -83,6 +125,43 @@
         return count;
     }
 
+    // Helper function to get recent appointments
+    private List<AppointmentData> getRecentAppointments(String filePath, ServletContext context, int limit) {
+        List<AppointmentData> appointments = new ArrayList<>();
+        try {
+            String realPath = context.getRealPath(filePath);
+            if (realPath == null) {
+                return appointments;
+            }
+            
+            File file = new File(realPath);
+            if (!file.exists()) {
+                return appointments;
+            }
+
+            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                String line;
+                int count = 0;
+                while ((line = br.readLine()) != null && count < limit) {
+                    String[] parts = line.split(",");
+                    if (parts.length >= 5) { // Assuming format: Patient,DateTime,Doctor,Department,Status
+                        String patient = parts[0];
+                        String dateTime = parts[1];
+                        String doctor = parts[2];
+                        String department = parts[3];
+                        String status = parts[4];
+
+                        appointments.add(new AppointmentData(patient, doctor, dateTime, department, status));
+                        count++;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return appointments;
+    }
+    
     // Helper class to store appointment data
     class AppointmentData {
         String patient;
@@ -99,42 +178,25 @@
             this.status = status;
         }
     }
-
-    // Helper function to get recent appointments
-    private List<AppointmentData> getRecentAppointments(String filePath, ServletContext context, int limit) {
-        List<AppointmentData> appointments = new ArrayList<>();
-        String realPath = context.getRealPath(filePath);
-
-        try (BufferedReader br = new BufferedReader(new FileReader(realPath))) {
-            String line;
-            int count = 0;
-            while ((line = br.readLine()) != null && count < limit) {
-                String[] parts = line.split(",");
-                if (parts.length >= 5) { // Assuming format: Patient,DateTime,Doctor,Department,Status
-                    String patient = parts[0];
-                    String dateTime = parts[1];
-                    String doctor = parts[2];
-                    String department = parts[3];
-                    String status = parts[4];
-
-                    appointments.add(new AppointmentData(patient, doctor, dateTime, department, status));
-                    count++;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return appointments;
-    }
 %>
 
 <%
-    // Get real data from files
-    int totalDoctors = countRecords("/WEB-INF/data/doctor.txt", application);
-    int totalPatients = countRecords("/WEB-INF/data/patience.txt", application);
-    int todayAppointments = countTodayAppointments("/WEB-INF/data/appointment.txt", application);
-    double monthlyRevenue = calculateMonthlyRevenue("/WEB-INF/data/payment.txt", application);
-    List<AppointmentData> recentAppointments = getRecentAppointments("/WEB-INF/data/appointment.txt", application, 5);
+    // Get real data from files - with error handling
+    int totalDoctors = 0;
+    int totalPatients = 0;
+    int todayAppointments = 0;
+    double monthlyRevenue = 0.0;
+    List<AppointmentData> recentAppointments = new ArrayList<>();
+    
+    try {
+        totalDoctors = countRecords("/WEB-INF/Data/doctor.txt", application);
+        totalPatients = countRecords("/WEB-INF/Data/patience.txt", application);
+        todayAppointments = countTodayAppointments("/WEB-INF/Data/appointment.txt", application);
+        monthlyRevenue = calculateMonthlyRevenue("/WEB-INF/Data/payment.txt", application);
+        recentAppointments = getRecentAppointments("/WEB-INF/Data/appointment.txt", application, 5);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
 %>
 
 <!DOCTYPE html>
@@ -498,9 +560,11 @@
 <header class="header">
     <a href="adminDashboard.jsp" class="logo">MediCare</a>
     <div class="nav-links">
-        <a href="Home.jsp" class="nav-link">Home</a>
-        <a href="admin" class="nav-link">Admin</a>
-        <a href="doctorLogin.jsp" class="nav-link">Doctor</a>
+        <a href="index.jsp" class="nav-link">Home</a>
+        <a href="AdminManagementServlet" class="nav-link">
+            <i class="fas fa-cog"></i> Admin Settings
+        </a>
+        <a href="AdminLogoutServlet" class="nav-link">Logout</a>
     </div>
 </header>
 
@@ -569,7 +633,7 @@
                 <p>Text under admin</p>
             </div>
             <div class="welcome-image">
-                <img src="${pageContext.request.contextPath}/resources/images/admin_dashboard.png" alt="Admin Dashboard">
+                <img src="${pageContext.request.contextPath} D:\UNI\Y2S2\OOP Project\MAMSystem\src\main\webapp\resources\Images\7355082.png" alt="Admin Dashboard">
             </div>
         </div>
 

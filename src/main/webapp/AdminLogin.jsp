@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -108,6 +108,15 @@
             bottom: 0;
             width: 100%;
         }
+
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -122,7 +131,17 @@
     <div class="login-form">
         <h1 class="login-title">Admin Login</h1>
 
-        <form action="adminLogin" method="post">
+        <!-- Display error message if any -->
+        <% if(request.getAttribute("errorMessage") != null) { %>
+        <div class="error-message">
+            <%= request.getAttribute("errorMessage") %>
+        </div>
+        <% } %>
+
+        <form action="${pageContext.request.contextPath}/AdminLoginServlet" method="post">
+            <!-- Added hidden field to identify login action -->
+            <input type="hidden" name="action" value="login">
+
             <div class="form-group">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" id="username" name="username" class="form-input" required>

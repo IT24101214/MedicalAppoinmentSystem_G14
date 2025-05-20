@@ -6,62 +6,15 @@
 
     <display-name>Medical Appointment Management System</display-name>
 
+    <!-- Listeners -->
+    <listener>
+        <listener-class>com.medicalsystem.Admin.utils.AppContextListener</listener-class>
+    </listener>
+
     <!-- Welcome File List -->
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
-
-    <!-- Servlet Definitions -->
-    <servlet>
-        <servlet-name>AdminRegisterServlet</servlet-name>
-        <servlet-class>com.medicalsystem.Admin.servlets.AdminRegisterServlet</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>AdminListServlet</servlet-name>
-        <servlet-class>com.medicalsystem.Admin.servlets.AdminListServlet</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>AdminDeleteServlet</servlet-name>
-        <servlet-class>com.medicalsystem.Admin.servlets.AdminDeleteServlet</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>AdminUpdateServlet</servlet-name>
-        <servlet-class>com.medicalsystem.Admin.servlets.AdminUpdateServlet</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>AdminPermissionServlet</servlet-name>
-        <servlet-class>com.medicalsystem.Admin.servlets.AdminPermissionServlet</servlet-class>
-    </servlet>
-
-    <!-- Servlet Mappings -->
-    <servlet-mapping>
-        <servlet-name>AdminRegisterServlet</servlet-name>
-        <url-pattern>/AdminRegisterServlet</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>AdminListServlet</servlet-name>
-        <url-pattern>/AdminListServlet</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>AdminDeleteServlet</servlet-name>
-        <url-pattern>/AdminDeleteServlet</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>AdminUpdateServlet</servlet-name>
-        <url-pattern>/AdminUpdateServlet</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>AdminPermissionServlet</servlet-name>
-        <url-pattern>/AdminPermissionServlet</url-pattern>
-    </servlet-mapping>
 
     <!-- Session Configuration -->
     <session-config>

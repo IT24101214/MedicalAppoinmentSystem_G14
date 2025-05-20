@@ -1,2 +1,0 @@
-12345,admin,admin123,superadmin,System Administrator,admin@medicalsystem.com,2023-05-18T10:30:00
-67890,user,user123,admin,Regular Admin,user@medicalsystem.com,2023-05-17T15:45:00

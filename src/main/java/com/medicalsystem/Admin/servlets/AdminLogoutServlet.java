@@ -10,38 +10,36 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet("/AdminListServlet")
-public class AdminListServlet extends HttpServlet {
+@WebServlet("/AdminLogoutServlet")
+public class AdminLogoutServlet extends HttpServlet {
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Get current admin from session
-        HttpSession session = request.getSession();
-        Admin currentAdmin = (Admin) session.getAttribute("currentAdmin");
+        HttpSession session = request.getSession(false);
 
-        // Check if admin is logged in
-        if (currentAdmin == null) {
-            response.sendRedirect("index.jsp");
-            return;
+        if (session != null) {
+            Admin admin = (Admin) session.getAttribute("currentAdmin");
+
+            if (admin != null) {
+                // Log the logout activity
+                FileHandler.logActivity("LOGOUT", "Admin logged out: " + admin.getUsername());
+            }
+
+            // Invalidate session
+            session.invalidate();
         }
 
-        // Get all admins
-        List<Admin> admins = FileHandler.getAllAdmins();
-
-        // Set admins in request
-        request.setAttribute("admins", admins);
-
-        // Forward to admin list page
-        request.getRequestDispatcher("manageAdmins.jsp").forward(request, response);
+        // Redirect to login page
+        response.sendRedirect("AdminLogin.jsp");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Handle any post requests if needed
+        // Handle POST request same as GET
         doGet(request, response);
     }
 }
