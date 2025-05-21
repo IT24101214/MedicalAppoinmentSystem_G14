@@ -19,9 +19,13 @@
         .center-wrapper {
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
+            align-items: flex-start; /* Align to top instead of center */
+            padding-top: 120px;       /* Space for the navbar */
+            padding-bottom: 40px;     /* Optional: space at the bottom */
+            min-height: 100vh;
+            box-sizing: border-box;
         }
+
 
         .form-container {
             background-color: #ffffff;
@@ -114,9 +118,9 @@
             <div class="form-group">
                 <label for="priority">Priority</label>
                 <select id="priority" name="priority" required>
-                    <option value="High">High</option>
-                    <option value="Medium" selected>Medium</option>
-                    <option value="Low">Low</option>
+                    <option value="Emergency">Emergency</option>
+                    <option value="High-priority" selected>High-priority</option>
+                    <option value="General">General</option>
                 </select>
             </div>
 

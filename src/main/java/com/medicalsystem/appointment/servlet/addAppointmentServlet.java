@@ -1,9 +1,9 @@
-package com.medicalsystem.Appointment.servlet;
+package com.medicalsystem.appointment.servlet;
 
-import com.medicalsystem.Appointment.Appointment;
-import com.medicalsystem.Appointment.AppointmentManager;
-import com.medicalsystem.Patient.Patient;
-import com.medicalsystem.Patient.PatientManager;
+import com.medicalsystem.appointment.Appointment;
+import com.medicalsystem.appointment.AppointmentManager;
+import com.medicalsystem.patient.Patient;
+import com.medicalsystem.patient.PatientManager;
 import com.medicalsystem.Doctor.Doctor;
 
 import jakarta.servlet.ServletException;
@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/addAppointment")
-public class AddAppointmentServlet extends HttpServlet {
+public class addAppointmentServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

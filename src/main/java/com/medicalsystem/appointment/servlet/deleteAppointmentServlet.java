@@ -1,6 +1,6 @@
-package com.medicalsystem.Appointment.servlet;
+package com.medicalsystem.appointment.servlet;
 
-import com.medicalsystem.Appointment.AppointmentManager;
+import com.medicalsystem.appointment.AppointmentManager;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/deleteAppointment")
-public class DeleteAppointmentServlet extends HttpServlet {
+public class deleteAppointmentServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

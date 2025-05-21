@@ -1,14 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.medicalsystem.Appointment.Appointment" %>
+<%@ page import="com.medicalsystem.appointment.Appointment" %>
 <%@ page import="com.medicalsystem.Doctor.Doctor" %>
-<%@ page import="com.medicalsystem.Patient.Patient" %>
-<%@ page import="com.medicalsystem.Appointment.AppointmentManager" %>
+<%@ page import="com.medicalsystem.patient.Patient" %>
 <%
-    String filePath = application.getRealPath("/data/appointments.txt");
-    AppointmentManager manager = new AppointmentManager();
-    List<Appointment> appointments = manager.getSortedAppointments();
-    request.setAttribute("appointments", appointments);
+    List<Appointment> appointments = (List<Appointment>) request.getAttribute("appointments");
 %>
 
 <!DOCTYPE html>
@@ -31,7 +27,7 @@
         <thead class="thead-dark">
         <tr>
             <th>Appointment ID</th>
-            <th>Patient ID</th>
+            <th>Patient Name</th>
             <th>Doctor ID</th>
             <th>Specialization</th>
             <th>Priority</th>
@@ -41,7 +37,7 @@
         </tr>
         </thead>
         <tbody>
-        <%
+        <% if (appointments != null && !appointments.isEmpty()) {
             for (Appointment a : appointments) {
                 Patient patient = a.getPatient();
                 Doctor doctor = a.getDoctor();
@@ -50,19 +46,25 @@
             <form action="<%= request.getContextPath() %>/updateAppointment" method="POST">
                 <td>
                     <%= a.getAppointmentID() %>
-                    <input type="hidden" name="appointmentId" value="<%= a.getAppointmentID() %>" />
+                    <input type="hidden" name="appointmentId" value="<%= a.getAppointmentID() %>">
                 </td>
                 <td><%= patient.getId() %></td>
-                <td><input type="text" name="doctorId" class="form-control" value="<%= doctor.getId() %>" required></td>
-                <td><input type="text" name="specialization" class="form-control" value="<%= doctor.getSpecialization() %>" required></td>
+                <td>
+                    <input type="text" name="doctorId" class="form-control" value="<%= doctor.getId() %>" required>
+                </td>
+                <td>
+                    <input type="text" name="specialization" class="form-control" value="<%= doctor.getSpecialization() %>" required>
+                </td>
                 <td>
                     <select name="priority" class="form-control">
-                        <option value="High" <%= "High".equals(a.getPriority()) ? "selected" : "" %>>High</option>
-                        <option value="Medium" <%= "Medium".equals(a.getPriority()) ? "selected" : "" %>>Medium</option>
-                        <option value="Low" <%= "Low".equals(a.getPriority()) ? "selected" : "" %>>Low</option>
+                        <option value="Emergency" <%= "Emergency".equals(a.getPriority()) ? "selected" : "" %>>Emergency</option>
+                        <option value="High-priority" <%= "High-priority".equals(a.getPriority()) ? "selected" : "" %>>High-priority</option>
+                        <option value="General" <%= "General".equals(a.getPriority()) ? "selected" : "" %>>General</option>
                     </select>
                 </td>
-                <td><input type="text" name="reason" class="form-control" value="<%= a.getReason() %>" required></td>
+                <td>
+                    <input type="text" name="reason" class="form-control" value="<%= a.getReason() %>" required>
+                </td>
                 <td>
                     <select name="status" class="form-control">
                         <option value="Pending" <%= "Pending".equals(a.getStatus()) ? "selected" : "" %>>Pending</option>
@@ -70,11 +72,18 @@
                         <option value="Rejected" <%= "Rejected".equals(a.getStatus()) ? "selected" : "" %>>Rejected</option>
                     </select>
                 </td>
-                <td>
-                    <button type="submit" class="btn btn-sm btn-primary">Update</button>
-                </td>
+                <td class="d-flex">
+                    <button type="submit" class="btn btn-sm btn-primary mr-2">Update</button>
             </form>
+            <form action="<%= request.getContextPath() %>/deleteAppointment" method="POST" onsubmit="return confirm('Are you sure you want to delete this appointment?');">
+                <input type="hidden" name="appointmentId" value="<%= a.getAppointmentID() %>">
+                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+            </form>
+            </td>
         </tr>
+        <%   } // end for
+        } else { %>
+        <tr><td colspan="8" class="text-center">No appointments found.</td></tr>
         <% } %>
         </tbody>
     </table>

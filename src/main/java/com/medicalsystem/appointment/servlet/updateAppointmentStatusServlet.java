@@ -1,9 +1,8 @@
-package com.medicalsystem.Appointment.servlet;
+package com.medicalsystem.appointment.servlet;
 
-import com.medicalsystem.Appointment.Appointment;
-import com.medicalsystem.Appointment.AppointmentManager;
+import com.medicalsystem.appointment.Appointment;
+import com.medicalsystem.appointment.AppointmentManager;
 import com.medicalsystem.Doctor.Doctor;
-import com.medicalsystem.Patient.Patient;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/updateAppointment")
-public class UpdateAppointmentStatusServlet extends HttpServlet {
+public class updateAppointmentStatusServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -32,7 +31,7 @@ public class UpdateAppointmentStatusServlet extends HttpServlet {
         Appointment appointment = appointmentManager.findAppointmentById(appointmentId);
         if (appointment == null) {
             request.setAttribute("error", "Appointment not found.");
-            request.getRequestDispatcher("/admin/appointmentList.jsp").forward(request, response);
+            request.getRequestDispatcher("/appointment/appointmentList.jsp").forward(request, response);
             return;
         }
 
@@ -49,6 +48,6 @@ public class UpdateAppointmentStatusServlet extends HttpServlet {
         // Redirect or forward
         request.setAttribute("success", "Appointment updated successfully.");
         request.setAttribute("appointments", appointmentManager.getSortedAppointments());
-        request.getRequestDispatcher("/admin/appointmentList.jsp").forward(request, response);
+        request.getRequestDispatcher("/appointment/appointmentList.jsp").forward(request, response);
     }
 }

@@ -1,7 +1,7 @@
-package com.medicalsystem.Appointment.servlet;
+package com.medicalsystem.appointment.servlet;
 
-import com.medicalsystem.Appointment.Appointment;
-import com.medicalsystem.Appointment.AppointmentManager;
+import com.medicalsystem.appointment.Appointment;
+import com.medicalsystem.appointment.AppointmentManager;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,8 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/admin/appointmentList")
-public class AppointmentListServlet extends HttpServlet {
+@WebServlet("/servlet/appointmentList")
+public class appointmentListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -23,7 +23,7 @@ public class AppointmentListServlet extends HttpServlet {
 
 
         request.setAttribute("appointments", sortedAppointments);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/appointmentList.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/appointment/appointmentList.jsp");
         dispatcher.forward(request, response);
     }
 }

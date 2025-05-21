@@ -1,7 +1,7 @@
-package com.medicalsystem.Appointment;
+package com.medicalsystem.appointment;
 
-import com.medicalsystem.Doctor.Doctor;
-import com.medicalsystem.Patient.Patient;
+import com.medicalsystem.Doctor.*;
+import com.medicalsystem.patient.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +71,7 @@ public class AppointmentManager {
     public List<Appointment> getSortedAppointments() {
         loadFromFile();
         List<Appointment> sortedList = new ArrayList<>(appointmentQueue);
-        DSAUtils.bubbleSort(sortedList);
+        DSAUtils.bubbleSort(sortedList);  //bubbleSort usage
         return sortedList;
     }
 

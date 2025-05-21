@@ -1,7 +1,7 @@
-package com.medicalsystem.Appointment;
+package com.medicalsystem.appointment;
 
 import com.medicalsystem.Doctor.Doctor;
-import com.medicalsystem.Patient.Patient;
+import com.medicalsystem.patient.Patient;
 
 public class Appointment implements Comparable<Appointment> {
     private String appointmentID;
@@ -40,9 +40,9 @@ public class Appointment implements Comparable<Appointment> {
 
     private int getPriorityLevel(String p) {
         switch (p.toLowerCase()) {
-            case "high": return 1;
-            case "medium": return 2;
-            case "low": return 3;
+            case "emergency": return 1;
+            case "high-priority": return 2;
+            case "general": return 3;
             default: return 4;
         }
     }
