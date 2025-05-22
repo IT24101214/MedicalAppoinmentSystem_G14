@@ -6,8 +6,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
-import com.medicalsystem.dsa.DSAUtils;
-import com.medicalsystem.utils.ProjectSetup;
+import com.medicalsystem.appointment.dsa.DSAUtils;
+import com.medicalsystem.appointment.utils.ProjectSetup;
 
 public class AppointmentManager {
     private final String filePath;

@@ -1,31 +1,66 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Add New Appointment</title>
-
-    <!-- Bootstrap 5 CDN (Optional but recommended for consistent design) -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare - Add New Appointment</title>
     <style>
-        body, html {
-            height: 100%;
+        * {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        body {
+            background-color: #e6ffff;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 60px; /* Space for footer */
+        }
+
+        /* Header */
+        header {
+            background-color: #ffffff;
+            padding: 15px 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00a0b0;
+            text-decoration: none;
+        }
+
+        nav {
+            display: flex;
+        }
+
+        nav a {
+            margin-left: 25px;
+            text-decoration: none;
+            color: #0096b1;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #00a0b0;
+        }
+
+        /* Main Content */
         .center-wrapper {
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Align to top instead of center */
-            padding-top: 120px;       /* Space for the navbar */
-            padding-bottom: 40px;     /* Optional: space at the bottom */
-            min-height: 100vh;
+            padding-top: 40px;
+            padding-bottom: 40px;
             box-sizing: border-box;
         }
-
 
         .form-container {
             background-color: #ffffff;
@@ -42,6 +77,9 @@
 
         label {
             font-weight: bold;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
         }
 
         input, select, textarea {
@@ -49,30 +87,58 @@
             padding: 10px;
             border-radius: 6px;
             border: 1px solid #ccc;
+            font-size: 16px;
         }
 
         button[type="submit"] {
-            background-color: #328eca;
+            background-color: #20b2c0;
             color: white;
             border: none;
-            padding: 10px 18px;
-            font-weight: bold;
-            border-radius: 6px;
+            padding: 15px 35px;
+            font-size: 18px;
+            border-radius: 30px;
             cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         button[type="submit"]:hover {
-            background-color: #2980b9;
+            background-color: #0090a0;
+            transform: translateY(-2px);
+        }
+
+        h2 {
+            color: #00a0b0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #00a0b0;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
         }
     </style>
 </head>
 <body>
-
-<jsp:include page="/header.jsp" />
+<header>
+    <a href="<%= request.getContextPath() %>/index.jsp" class="logo">MediCare</a>
+    <nav>
+        <a href="<%= request.getContextPath() %>/index.jsp">Home</a>
+        <a href="<%= request.getContextPath() %>/schedule/ViewAvailability.jsp">Availability</a>
+        <a href="<%= request.getContextPath() %>/payment/addPayment.jsp">Payment</a>
+        <a href="<%= request.getContextPath() %>/feedback/addFeedback.jsp">Feedback</a>
+        <a href="<%= request.getContextPath() %>/Login.jsp">Login</a>
+    </nav>
+</header>
 
 <div class="center-wrapper">
     <div class="form-container">
-        <h2 class="text-center mb-4">Schedule New Appointment</h2>
+        <h2>Schedule New Appointment</h2>
 
         <% if (request.getAttribute("success") != null) { %>
         <p style="color: green; font-weight: bold; text-align: center;"><%= request.getAttribute("success") %></p>
@@ -129,12 +195,15 @@
                 <textarea id="reason" name="reason" rows="3" required></textarea>
             </div>
 
-            <div class="text-center">
+            <div style="text-align: center; margin-top: 20px;">
                 <button type="submit">Schedule Appointment</button>
             </div>
         </form>
     </div>
 </div>
 
+<footer>
+    <p>© 2025 Medicare. All Right Reserved</p>
+</footer>
 </body>
 </html>
