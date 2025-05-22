@@ -71,26 +71,28 @@
 <body>
 <div class="login-container">
     <h2>Doctor Login</h2>
-    <form id="doctorLoginForm" action="${pageContext.request.contextPath}/doctor/doctorLogin" method="post">
+    <form id="loginForm" action="${pageContext.request.contextPath}/doctor/doctorDashboard.jsp" method="post">
         <% String error = (String) request.getAttribute("error"); %>
         <% if (error != null) { %>
         <div class="error-message"><%= error %></div>
         <% } %>
-
+        <input type="hidden" name="action" value="login"/>
         <label for="doctorId">Doctor ID</label>
         <input type="text" name="doctorId" id="doctorId" required />
-
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required />
         <button type="submit">Login</button>
     </form>
 </div>
 
 <script>
-    document.getElementById('doctorLoginForm').addEventListener('submit', function(e) {
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
         const doctorId = document.getElementById('doctorId').value.trim();
+        const password = document.getElementById('password').value.trim();
 
-        if (!doctorId) {
+        if (!doctorId || !password) {
             e.preventDefault();
-            alert('Please enter Doctor ID');
+            alert('Please fill in all fields');
         }
     });
 </script>

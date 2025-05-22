@@ -10,7 +10,7 @@ public abstract class User implements Serializable {
     protected String email;
     protected String phone;
 
-    public User(String id, String name, String dob, String gender, String email, String phone) {
+    public User(String id, String name, String dob, String gender, String email) {
         this.id = id;
         this.name = name;
         this.dob = dob;

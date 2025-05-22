@@ -14,14 +14,24 @@ import java.util.List;
 
 @WebServlet("/doctors")
 public class DoctorListServlet extends HttpServlet {
-    private final DoctorManager doctorManager = new DoctorManager();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Doctor> doctors = doctorManager.getAllDoctors();
-        request.setAttribute("doctors", doctors);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/doctor/doctorList.jsp");
-        dispatcher.forward(request, response);
+
+        // Re-initialize DoctorManager every time to avoid stale data
+        DoctorManager doctorManager = new DoctorManager(getServletContext());
+
+        try {
+            List<Doctor> doctors = doctorManager.getAllDoctors();
+            request.setAttribute("doctors", doctors);
+
+            // Forward to JSP to show list
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/doctor/doctorList.jsp");
+            dispatcher.forward(request, response);
+
+        } catch (IOException e) {
+            throw new ServletException("Error loading doctors", e);
+        }
     }
 }

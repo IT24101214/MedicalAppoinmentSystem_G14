@@ -2,8 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Add New Doctor</title>
+    <title>Register New Doctor</title>
     <style>
         :root {
             --primary: #3498db;
@@ -79,10 +78,10 @@
 <div class="container">
     <h1>Register New Doctor</h1>
     <form action="${pageContext.request.contextPath}/addDoctor" method="POST" class="form-grid">
-    <!-- Column 1 -->
+
         <div class="form-group">
-            <label for="id">Doctor ID</label>
-            <input type="text" id="id" name="id" required>
+            <label for="doctorID">Doctor ID</label>
+            <input type="text" id="doctorID" name="doctorID" required>
         </div>
 
         <div class="form-group">
@@ -98,13 +97,13 @@
         <div class="form-group">
             <label for="gender">Gender</label>
             <select id="gender" name="gender" required>
+                <option value="">Select gender</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
                 <option value="Other">Other</option>
             </select>
         </div>
 
-        <!-- Column 2 -->
         <div class="form-group">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" required>
@@ -120,13 +119,9 @@
             <input type="text" id="specialization" name="specialization" required>
         </div>
 
-        <div class="form-group">
-            <label for="availability">Availability</label>
-            <select id="availability" name="availability" required>
-                <option value="Available">Available</option>
-                <option value="On Leave">On Leave</option>
-                <option value="Emergency Only">Emergency Only</option>
-            </select>
+        <div class="form-group" style="grid-column: span 2;">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
         </div>
 
         <button type="submit" class="btn-submit">Register Doctor</button>

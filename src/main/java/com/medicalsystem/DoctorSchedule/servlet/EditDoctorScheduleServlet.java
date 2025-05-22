@@ -1,35 +1,30 @@
 package com.medicalsystem.DoctorSchedule.servlet;
 
+
+import com.medicalsystem.DoctorSchedule.DoctorScheduleList;
 import com.medicalsystem.DoctorSchedule.DoctorScheduleManager;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/editSchedule")
 public class EditDoctorScheduleServlet extends HttpServlet {
-    private final DoctorScheduleManager manager = new DoctorScheduleManager();
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String doctorId = request.getParameter("doctorId");
         String date = request.getParameter("date");
+        String startTime = request.getParameter("startTime");
+        String endTime = request.getParameter("endTime");
 
-        // Find the schedule to edit (implementation needed in DoctorScheduleManager)
-        // DoctorSchedule schedule = manager.getSchedule(doctorId, date);
-        // request.setAttribute("schedule", schedule);
+        String status = request.getParameter("status");
 
-        request.getRequestDispatcher("/schedule/editSchedule.jsp").forward(request, response);
-    }
+        DoctorScheduleManager manager = new DoctorScheduleManager(getServletContext());
+        DoctorScheduleList list = manager.loadSchedules();
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Update logic here
-        response.sendRedirect("schedules");
+
+
+        manager.saveAllSchedules(list);
+        response.sendRedirect("viewDoctorSchedule.jsp");
     }
 }

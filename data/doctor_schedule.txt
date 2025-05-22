@@ -1,0 +1,15 @@
+DOC002|09:24|09:24|Active|Wednesday
+DOC005|09:24|09:24|Active|Wednesday
+DOC005|09:24|09:24|Active|Wednesday
+DOC005|09:24|09:24|Active|Wednesday,Friday,Sunday
+DOC005|09:24|09:24|Active|Tuesday,Wednesday,Thursday,Friday,Sunday
+DOC005|09:24|09:24|On Leave|Tuesday,Wednesday,Thursday,Friday,Sunday
+DOC005|09:24|09:24|On Leave|Tuesday,Wednesday,Thursday,Friday,Sunday
+DOC005|09:24|09:24|On Leave|Tuesday,Wednesday,Thursday,Friday,Sunday
+DOC006|09:24|09:24|Active|Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday
+DOC006|09:24|09:24|Active|Monday,Tuesday,Wednesday,Thursday,Friday
+DOC006|09:24|09:24|Active|Monday,Tuesday,Wednesday,Thursday,Friday
+DOC001|12:31|14:28|Active|Monday,Friday
+DOC001|16:41|16:40|Active|Monday,Friday
+DOC001|16:41|16:40|Inactive|Monday,Tuesday,Friday
+DOC002|00:05|00:06|Inactive|Tuesday

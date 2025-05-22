@@ -1,65 +1,116 @@
 package com.medicalsystem.Doctor;
 
+import jakarta.servlet.ServletContext;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DoctorManager {
-    private static final String FILE_PATH = "E:/Project sem2/MedicalAppointmentSchedulingSystem1/data/doctor.txt";
+    private final String filePath;
 
-    // Existing method to get all doctors
-    public List<Doctor> getAllDoctors() {
+    public DoctorManager(ServletContext context) {
+        File deployRoot = new File(context.getRealPath("/"));
+        File projectRoot = deployRoot.getParentFile().getParentFile();
+        File dataDir = new File(projectRoot, "data");
+        if (!dataDir.exists()) {
+            dataDir.mkdirs();
+        }
+
+        File file = new File(dataDir, "doctor.txt");
+        this.filePath = file.getAbsolutePath();
+
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Could not create doctor.txt file", e);
+        }
+    }
+//create
+    public void addDoctor(Doctor doctor) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
+            writer.write(toCSV(doctor));
+            writer.newLine();
+        }
+    }
+//read
+    public List<Doctor> getAllDoctors() throws IOException {
         List<Doctor> doctors = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length == 8) {
-                    Doctor doctor = new Doctor(
-                            parts[0], // id
-                            parts[1], // name
-                            parts[2], // dob
-                            parts[3], // gender
-                            parts[4], // email
-                            parts[5], // phone
-                            parts[6], // specialization
-                            parts[7]  // availability
-                    );
+                Doctor doctor = fromCSV(line);
+                if (doctor != null) {
                     doctors.add(doctor);
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace(); // In production, consider proper logging
         }
         return doctors;
     }
 
-    // Method to get a doctor by ID
-    public Doctor getDoctorById(String id) {
-        for (Doctor doc : getAllDoctors()) {
-            if (doc.getId().equalsIgnoreCase(id)) {
-                return doc;
+    public Doctor getDoctorById(String doctorID) throws IOException {
+        for (Doctor doctor : getAllDoctors()) {
+            if (doctor.getDoctorID().equals(doctorID)) {
+                return doctor;
             }
         }
         return null;
     }
 
-    // New method to add a doctor to the file
-    public void addDoctor(Doctor doctor) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
-            String doctorData = doctor.getId() + "," +
-                    doctor.getName() + "," +
-                    doctor.getDob() + "," +
-                    doctor.getGender() + "," +
-                    doctor.getEmail() + "," +
-                    doctor.getPhone() + "," +
-                    doctor.getSpecialization() + "," +
-                    doctor.getAvailability();
-
-            writer.write(doctorData);
-            writer.newLine(); // Add a new line after each doctor
-        } catch (IOException e) {
-            e.printStackTrace(); // In production, consider proper logging
+    public boolean validateDoctor(String doctorID, String password) throws IOException {
+        for (Doctor doc : getAllDoctors()) {
+            if (doc.getDoctorID().equals(doctorID) && doc.getPassword().equals(password)) {
+                return true;
+            }
         }
+        return false;
+    }
+//update
+    public void updateDoctor(Doctor updatedDoctor) throws IOException {
+        List<Doctor> doctors = getAllDoctors();
+
+        for (int i = 0; i < doctors.size(); i++) {
+            if (doctors.get(i).getDoctorID().equals(updatedDoctor.getDoctorID())) {
+                doctors.set(i, updatedDoctor);
+                saveAllDoctors(doctors);
+                break;
+            }
+        }
+    }
+
+
+    private void saveAllDoctors(List<Doctor> doctors) throws IOException {
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            for (Doctor doctor : doctors) {
+                writer.write(toCSV(doctor));
+                writer.newLine();
+            }
+        }
+    }
+
+    private String toCSV(Doctor doctor) {
+
+        return String.join(",",
+                doctor.getDoctorID(),
+                doctor.getName(),
+                doctor.getDob(),
+                doctor.getGender(),
+                doctor.getEmail(),
+                doctor.getPhone(),
+                doctor.getSpecialization(),
+                doctor.getPassword()
+        );
+    }
+
+    private Doctor fromCSV(String line) {
+
+        String[] data = line.split(",", -1);
+        if (data.length == 8) {
+            return new Doctor(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
+        }
+
+        return null;
     }
 }

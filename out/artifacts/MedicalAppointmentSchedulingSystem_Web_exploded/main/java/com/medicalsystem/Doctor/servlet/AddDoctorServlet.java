@@ -12,25 +12,32 @@ import java.io.IOException;
 
 @WebServlet("/addDoctor")
 public class AddDoctorServlet extends HttpServlet {
-    private final DoctorManager doctorManager = new DoctorManager(); // ✅ Use this one
+    private DoctorManager doctorManager;
+
+    @Override
+    public void init() throws ServletException {
+        doctorManager = new DoctorManager(getServletContext());
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id = request.getParameter("id");
-        String name = request.getParameter("name");
-        String dob = request.getParameter("dob");
-        String gender = request.getParameter("gender");
-        String email = request.getParameter("email");
-        String phone = request.getParameter("phone");
-        String specialization = request.getParameter("specialization");
-        String availability = request.getParameter("availability");
+        try {
+            Doctor doctor = new Doctor(
+                    request.getParameter("doctorID"),
+                    request.getParameter("name"),
+                    request.getParameter("dob"),
+                    request.getParameter("gender"),
+                    request.getParameter("email"),
+                    request.getParameter("phone"),
+                    request.getParameter("specialization"),
+                    request.getParameter("password")
+            );
 
-        Doctor doctor = new Doctor(id, name, dob, gender, email, phone, specialization, availability);
-
-        doctorManager.addDoctor(doctor); // ✅ Use class-level manager
-
-        // ✅ Redirect to Doctor List Servlet
-        response.sendRedirect(request.getContextPath() + "/doctors");
+            doctorManager.addDoctor(doctor);
+            response.sendRedirect(request.getContextPath() + "/doctors");
+        } catch (IOException e) {
+            throw new ServletException("Error adding doctor", e);
+        }
     }
 }

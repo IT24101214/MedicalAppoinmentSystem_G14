@@ -3,14 +3,16 @@ package com.medicalsystem.Doctor;
 import com.medicalsystem.User.User;
 
 public class Doctor extends User {
+    private String doctorID;
     private String specialization;
-    private String availability;
+    private String password;
 
-    public Doctor(String id, String name, String dob, String gender, String email, String phone,
-                  String specialization, String availability) {
-        super(id, name, dob, gender, email, phone);
+    public Doctor(String doctorID, String name, String dob, String gender, String email, String phone,
+                  String specialization, String password) {
+        super(name, dob, gender, email, phone);
+        this.doctorID = doctorID;
         this.specialization = specialization;
-        this.availability = availability;
+        this.password = password;
     }
 
     @Override
@@ -23,11 +25,29 @@ public class Doctor extends User {
         System.out.println("Doctor Profile Updated: " + this.name);
     }
 
-    public String getSpecialization() { return specialization; }
-    public void setSpecialization(String specialization) { this.specialization = specialization; }
+    public String getDoctorID() {
+        return doctorID;
+    }
 
-    public String getAvailability() { return availability; }
-    public void setAvailability(String availability) { this.availability = availability; }
+    public void setDoctorID(String doctorID) {
+        this.doctorID = doctorID;
+    }
+
+    public String getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public void viewAppointments() {
         System.out.println("Viewing doctor appointments...");
@@ -35,9 +55,5 @@ public class Doctor extends User {
 
     public void markAppointmentCompleted() {
         System.out.println("Marking appointment as completed...");
-    }
-
-    public void updateAvailability(String status) {
-        this.availability = status;
     }
 }

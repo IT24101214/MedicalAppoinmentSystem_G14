@@ -8,8 +8,8 @@
     <title>Admin Dashboard</title>
     <style>
         :root {
-            --primary: #3498db; /* Set your primary color */
-            --secondary: #2c3e50; /* Set your secondary color */
+            --primary: #3498db;
+            --secondary: #2c3e50;
         }
 
         body {
@@ -19,7 +19,7 @@
             padding: 0;
         }
 
-        /* Header */
+        /* Header (Assuming header.jsp already styles it) */
         header {
             background: var(--secondary);
             color: white;
@@ -27,137 +27,90 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: white;
-        }
-
-        .logo span {
-            color: var(--primary);
-        }
-
-        /* Main Dashboard Container */
         .dashboard-container {
             display: flex;
-            height: 100vh;
+            height: calc(100vh - 80px); /* Adjust if header is taller/shorter */
         }
 
-        /* Sidebar */
         .sidebar {
-            width: 300px; /* Reduced width */
-            background:var(--primary);
-            color:white ;
+            width: 280px;
+            background: var(--primary);
+            color: white;
             padding: 20px;
             box-sizing: border-box;
-            height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
         }
 
         .sidebar h2 {
-            font-size: 24px;
-            margin-bottom: 30px; /* Reduced margin */
+            font-size: 22px;
+            margin-bottom: 20px;
         }
 
         .sidebar a {
             color: white;
             text-decoration: none;
-            font-size: 16px; /* Reduced font size */
-            margin-bottom: 0px; /* Reduced margin */
+            font-size: 16px;
+            margin: 8px 0;
             display: block;
-            transition: background 0.3s;
-            padding: 2px; /* Reduced padding */
+            padding: 6px;
             border-radius: 6px;
         }
 
         .sidebar a:hover {
-            background: #34495e;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex-grow: 1;
-            padding: 30px;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .main-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-        }
-
-        .main-header h1 {
-            margin: 0;
-            color: #2c3e50;
+            background: #2980b9;
         }
 
         .logout-button {
-            padding: 10px 20px;
+            margin-top: 20px;
+            padding: 10px;
             background: #e74c3c;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
         }
 
-        /* Dashboard Content Section */
-        .dashboard-content {
-            margin-top: 20px;
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+            background: white;
+            overflow-y: auto;
         }
 
-        .dashboard-content h2 {
-            margin-bottom: 20px;
-            color: #2c3e50;
+        .main-header h1 {
+            margin: 0 0 20px 0;
+            color: var(--secondary);
         }
 
-        .card {
+        .dashboard-content .card {
             background: #ecf0f1;
-            border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
             margin-bottom: 20px;
         }
 
         .card h3 {
-            margin: 0;
-            font-size: 20px;
-            color: #2c3e50;
+            margin: 0 0 10px 0;
+            color: var(--secondary);
         }
 
-        .card p {
-            color: #7f8c8d;
+        .view-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--primary);
+            text-decoration: underline;
+            font-weight: bold;
         }
-
     </style>
 </head>
 <body>
 
-<!-- Header -->
-<header>
-    <div class="navbar">
-        <div class="logo">Medi<span>Care</span>|G14</div>
-        <div class="nav-links">
-            <!-- Add navigation links here if needed in the future -->
-        </div>
-    </div>
-</header>
+<!-- ✅ Include the full header (logo + nav) from a separate file -->
+<jsp:include page="/header.jsp" />
 
-<!-- Dashboard Content -->
 <div class="dashboard-container">
+
     <!-- Sidebar -->
     <div class="sidebar">
         <h2>Admin Dashboard</h2>
@@ -167,8 +120,6 @@
         <a href="<%= request.getContextPath() %>/doctors" class="nav-btn">View all Doctors</a>
         <a href="<%= request.getContextPath() %>/schedules" class="nav-btn">View all DoctorSchedules</a>
 
-        <a href="feedback.jsp">View Feedback</a>
-        <a href="payments.jsp">Manage Payments</a>
         <form action="${pageContext.request.contextPath}/admin/AdminServlet" method="post">
             <input type="hidden" name="action" value="logout"/>
             <button type="submit" class="logout-button">Logout</button>
@@ -178,7 +129,7 @@
     <!-- Main Content -->
     <div class="main-content">
         <div class="main-header">
-            <h1>Welcome, Admin <%= session.getAttribute("admin") %></h1>
+            <h1>Welcome, <%= session.getAttribute("admin") %></h1>
         </div>
 
         <div class="dashboard-content">
@@ -190,13 +141,17 @@
             <div class="card">
                 <h3>Upcoming Appointments</h3>
                 <p>View and manage upcoming appointments scheduled for today.</p>
-                <a href="appointments.jsp" class="view-link">View Appointments</a>
+                <a href="<%= request.getContextPath() %>/appointments" class="nav-btn">View All Appointments</a>
+
+
+
             </div>
 
             <div class="card">
                 <h3>Recent Feedback</h3>
                 <p>View recent feedback from patients about their experience.</p>
-                <a href="feedback.jsp" class="view-link">View Feedback</a>
+                <a href="<%= request.getContextPath() %>/feedbacks" class="nav-btn">View Feedbacks</a>
+
             </div>
 
             <div class="card">
