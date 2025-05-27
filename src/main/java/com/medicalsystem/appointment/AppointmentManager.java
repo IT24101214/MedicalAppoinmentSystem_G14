@@ -135,6 +135,7 @@ public class AppointmentManager {
 
     public String generateAppointmentId() {
         loadFromFile();
-        return DSAUtils.generateAppointmentId((List<Appointment>) appointmentQueue);
+        return DSAUtils.generateAppointmentId(appointmentQueue.toList());
     }
+
 }

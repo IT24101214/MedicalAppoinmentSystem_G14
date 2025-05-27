@@ -36,5 +36,8 @@ public class PriorityQueue {
         }
     }
 
+    public List<Appointment> toList() {
+        return new ArrayList<>(heap);
+    }
 
 }
