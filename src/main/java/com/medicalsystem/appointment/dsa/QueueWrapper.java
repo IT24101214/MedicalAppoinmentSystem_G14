@@ -1,6 +1,6 @@
-package com.medicalsystem.dsa;// com.medicalsystem.dsa.QueueWrapper.java
+package com.medicalsystem.appointment.dsa;// com.medicalsystem.dsa.QueueWrapper.java
 
-import com.medicalsystem.Appointment.Appointment;
+import com.medicalsystem.appointment.Appointment;
 import java.util.PriorityQueue;
 
 /// OPTIONAL one abstract priorityQueue

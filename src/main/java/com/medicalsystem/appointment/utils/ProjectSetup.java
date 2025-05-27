@@ -1,4 +1,4 @@
-package com.medicalsystem.utils;
+package com.medicalsystem.appointment.utils;
 
 import java.io.File;
 

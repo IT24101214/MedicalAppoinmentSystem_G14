@@ -197,11 +197,11 @@
 <div class="container">
     <h2>Appointment List</h2>
 
-    <% if (request.getAttribute("success") !=null) { %>
+    <% if (request.getAttribute("success") != null) { %>
     <div class="alert alert-success">
         <%= request.getAttribute("success") %>
     </div>
-    <% } else if (request.getAttribute("error") !=null) { %>
+    <% } else if (request.getAttribute("error") != null) { %>
     <div class="alert alert-danger">
         <%= request.getAttribute("error") %>
     </div>
@@ -221,85 +221,57 @@
         </tr>
         </thead>
         <tbody>
-        <% if (appointments !=null && !appointments.isEmpty()) { for
-        (Appointment a : appointments) { Patient
-                patient=a.getPatient(); Doctor doctor=a.getDoctor(); %>
+        <%
+            if (appointments != null && !appointments.isEmpty()) {
+                for (Appointment a : appointments) {
+                    Patient patient = a.getPatient();
+                    Doctor doctor = a.getDoctor();
+        %>
         <tr>
-            <form
-                    action="<%= request.getContextPath() %>/updateAppointment"
-                    method="POST">
+            <form action="<%= request.getContextPath() %>/updateAppointment" method="POST">
                 <td>
                     <%= a.getAppointmentID() %>
-                    <input type="hidden" name="appointmentId"
-                           value="<%= a.getAppointmentID() %>">
+                    <input type="hidden" name="appointmentId" value="<%= a.getAppointmentID() %>">
                 </td>
+                <td><%= patient.getName() %></td>
+                <td><input type="text" name="doctorId" value="<%= doctor.getId() %>" required></td>
+                <td><input type="text" name="specialization" value="<%= doctor.getSpecialization() %>" required></td>
                 <td>
-                    <%= patient.getName() %>
-                </td>
-                <td>
-                    <input type="text" name="doctorId"
-                           value="<%= doctor.getId() %>" required>
-                </td>
-                <td>
-                    <input type="text" name="specialization"
-                           value="<%= doctor.getSpecialization() %>"
-                           required>
-                </td>
-                <td>
-                    <select name="priority">
-                        <option value="Emergency" <%="Emergency"
-                                .equals(a.getPriority()) ? "selected"
-                                : "" %>>Emergency</option>
-                        <option value="High-priority"
-                                <%="High-priority"
-                                        .equals(a.getPriority()) ? "selected"
-                                        : "" %>>High-priority</option>
-                        <option value="General" <%="General"
-                                .equals(a.getPriority()) ? "selected"
-                                : "" %>>General</option>
+                    <select name="priority" required>
+                        <option value="Emergency" <%= "Emergency".equalsIgnoreCase(a.getPriority()) ? "selected" : "" %>>Emergency</option>
+                        <option value="High-priority" <%= "High-priority".equalsIgnoreCase(a.getPriority()) ? "selected" : "" %>>High-priority</option>
+                        <option value="General" <%= "General".equalsIgnoreCase(a.getPriority()) ? "selected" : "" %>>General</option>
                     </select>
                 </td>
+                <td><input type="text" name="reason" value="<%= a.getReason() %>" required></td>
                 <td>
-                    <input type="text" name="reason"
-                           value="<%= a.getReason() %>" required>
-                </td>
-                <td>
-                    <select name="status">
-                        <option value="Pending" <%="Pending"
-                                .equals(a.getStatus()) ? "selected" : ""
-                        %>>Pending</option>
-                        <option value="Approved" <%="Approved"
-                                .equals(a.getStatus()) ? "selected" : ""
-                        %>>Approved</option>
-                        <option value="Rejected" <%="Rejected"
-                                .equals(a.getStatus()) ? "selected" : ""
-                        %>>Rejected</option>
+                    <select name="status" required>
+                        <option value="Pending" <%= "Pending".equalsIgnoreCase(a.getStatus()) ? "selected" : "" %>>Pending</option>
+                        <option value="Approved" <%= "Approved".equalsIgnoreCase(a.getStatus()) ? "selected" : "" %>>Approved</option>
+                        <option value="Rejected" <%= "Rejected".equalsIgnoreCase(a.getStatus()) ? "selected" : "" %>>Rejected</option>
                     </select>
                 </td>
                 <td class="d-flex">
-                    <button type="submit"
-                            class="btn-primary">Update</button>
+                    <button type="submit" class="btn-primary">Update</button>
             </form>
-            <form
-                    action="<%= request.getContextPath() %>/deleteAppointment"
-                    method="POST"
-                    onsubmit="return confirm('Are you sure you want to delete this appointment?');">
-                <input type="hidden" name="appointmentId"
-                       value="<%= a.getAppointmentID() %>">
-                <button type="submit"
-                        class="btn-danger">Delete</button>
+
+            <form action="<%= request.getContextPath() %>/deleteAppointment" method="POST"
+                  onsubmit="return confirm('Are you sure you want to delete this appointment?');">
+                <input type="hidden" name="appointmentId" value="<%= a.getAppointmentID() %>">
+                <button type="submit" class="btn-danger">Delete</button>
             </form>
             </td>
         </tr>
-        <% } // end for } else { %>
+        <%      } // end for
+        } else { %>
         <tr>
-            <td colspan="8" style="text-align: center;">No
-                appointments found.</td>
+            <td colspan="8" style="text-align: center;">No appointments found.</td>
         </tr>
         <% } %>
         </tbody>
     </table>
 </div>
+
 
 <footer>
     <p>© 2025 Medicare. All Right Reserved</p>

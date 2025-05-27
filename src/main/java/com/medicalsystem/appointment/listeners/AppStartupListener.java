@@ -1,6 +1,6 @@
-package com.medicalsystem.listeners;
+package com.medicalsystem.appointment.listeners;
 
-import com.medicalsystem.utils.ProjectSetup;
+import com.medicalsystem.appointment.utils.ProjectSetup;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;

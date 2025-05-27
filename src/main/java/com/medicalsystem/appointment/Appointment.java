@@ -34,7 +34,8 @@ public class Appointment implements Comparable<Appointment> {
 
 
     @Override
-    public int compareTo(Appointment o) {
+    public int compareTo(Appointment o)
+    {
         return getPriorityLevel(this.priority) - getPriorityLevel(o.priority);
     }
 

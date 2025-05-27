@@ -1,6 +1,6 @@
-package com.medicalsystem.deleteDataFolder;
+package com.medicalsystem.appointment.deleteDataFolder;
 
-import com.medicalsystem.utils.ProjectSetup;
+import com.medicalsystem.appointment.utils.ProjectSetup;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;

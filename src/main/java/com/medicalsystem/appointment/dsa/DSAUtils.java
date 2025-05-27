@@ -28,7 +28,7 @@ public class DSAUtils {
     }
 
     // Helper to convert priority to numeric value
-    private static int getPriorityValue(String priority) {
+    static int getPriorityValue(String priority) {
         return switch (priority.toLowerCase()) {
             case "high" -> 1;
             case "medium" -> 2;
@@ -40,9 +40,9 @@ public class DSAUtils {
 
 
     //  Generate appointmentID automatically "APT###" format
-    public static String generateAppointmentId(PriorityQueue<Appointment> queue) {
+    public static String generateAppointmentId(List<Appointment> appointments) {
         int maxId = 0;
-        for (Appointment a : queue) {
+        for (Appointment a : appointments) {
             String id = a.getAppointmentID().replaceAll("\\D", "");
             try {
                 int num = Integer.parseInt(id);
@@ -56,8 +56,8 @@ public class DSAUtils {
 
     public static PriorityQueue<Appointment> rebuildQueue(List<Appointment> appointments) {
         PriorityQueue<Appointment> queue = new PriorityQueue<>();
-        for (Appointment appointment : appointments) {
-            queue.offer(appointment); // Add each appointment to the queue
+        for (Appointment a : appointments) {
+            queue.offer(a); // Add each appointment to the queue
         }
         return queue;
     }
