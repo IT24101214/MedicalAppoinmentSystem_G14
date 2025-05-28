@@ -3,7 +3,6 @@ package com.medicalsystem.appointment.dsa;
 import com.medicalsystem.appointment.Appointment;
 
 import java.util.List;
-import java.util.PriorityQueue;
 
 public class DSAUtils {
 
@@ -14,30 +13,44 @@ public class DSAUtils {
         do {
             swapped = false;
             for (int i = 1; i < n; i++) {
-                // Compare by numeric priority value (lower = higher priority)
-                if (getPriorityValue(list.get(i - 1).getPriority()) > getPriorityValue(list.get(i).getPriority())) {
-                    // Swap
-                    Appointment temp = list.get(i - 1);
-                    list.set(i - 1, list.get(i));
-                    list.set(i, temp);
+                Appointment a1 = list.get(i - 1);
+                Appointment a2 = list.get(i);
+
+                int p1 = getPriorityValue(a1.getPriority());
+                int p2 = getPriorityValue(a2.getPriority());
+
+                // Compare by priority first
+                boolean shouldSwap = false;
+                if (p1 > p2) {
+                    shouldSwap = true;
+                } else if (p1 == p2) {
+                    // Same priority, compare by time if available
+                    if (a1.getAppointmentTime() != null && a2.getAppointmentTime() != null &&
+                            a1.getAppointmentTime().isAfter(a2.getAppointmentTime())) {
+                        shouldSwap = true;
+                    }
+                }
+
+                if (shouldSwap) {
+                    // Swap appointments
+                    list.set(i - 1, a2);
+                    list.set(i, a1);
                     swapped = true;
                 }
             }
-            n--; // Optimized bubble sort
+            n--; // optimization
         } while (swapped);
     }
 
-    // Helper to convert priority to numeric value
+    // Helper to convert priority to numeric value for sorting (lower = higher priority)
     static int getPriorityValue(String priority) {
         return switch (priority.toLowerCase()) {
-            case "high" -> 1;
-            case "medium" -> 2;
-            case "low" -> 3;
-            default -> 4; // unknown priority
+            case "emergency" -> 1;
+            case "high-priority" -> 2;
+            case "general" -> 3;
+            default -> 4;
         };
     }
-
-
 
     //  Generate appointmentID automatically "APT###" format
     public static String generateAppointmentId(List<Appointment> appointments) {
@@ -54,11 +67,4 @@ public class DSAUtils {
         return String.format("APT%03d", maxId + 1);
     }
 
-    public static PriorityQueue<Appointment> rebuildQueue(List<Appointment> appointments) {
-        PriorityQueue<Appointment> queue = new PriorityQueue<>();
-        for (Appointment a : appointments) {
-            queue.offer(a); // Add each appointment to the queue
-        }
-        return queue;
-    }
 }

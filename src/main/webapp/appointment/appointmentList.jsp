@@ -217,6 +217,7 @@
             <th>Priority</th>
             <th>Reason</th>
             <th>Status</th>
+            <th>Booked Time</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -238,11 +239,12 @@
                 <td><input type="text" name="specialization" value="<%= doctor.getSpecialization() %>" required></td>
                 <td>
                     <select name="priority" required>
-                        <option value="Emergency" <%= "Emergency".equalsIgnoreCase(a.getPriority()) ? "selected" : "" %>>Emergency</option>
-                        <option value="High-priority" <%= "High-priority".equalsIgnoreCase(a.getPriority()) ? "selected" : "" %>>High-priority</option>
-                        <option value="General" <%= "General".equalsIgnoreCase(a.getPriority()) ? "selected" : "" %>>General</option>
+                        <option value="emergency" <%= "emergency".equalsIgnoreCase(a.getPriority()) ? "selected" : "" %>>Emergency</option>
+                        <option value="high-priority" <%= "high-priority".equalsIgnoreCase(a.getPriority()) ? "selected" : "" %>>High Priority</option>
+                        <option value="general" <%= "general".equalsIgnoreCase(a.getPriority()) ? "selected" : "" %>>General</option>
                     </select>
                 </td>
+
                 <td><input type="text" name="reason" value="<%= a.getReason() %>" required></td>
                 <td>
                     <select name="status" required>
@@ -251,6 +253,7 @@
                         <option value="Rejected" <%= "Rejected".equalsIgnoreCase(a.getStatus()) ? "selected" : "" %>>Rejected</option>
                     </select>
                 </td>
+                <td><%= a.getAppointmentTime() != null ? a.getAppointmentTime().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss")) : "N/A" %></td>
                 <td class="d-flex">
                     <button type="submit" class="btn-primary">Update</button>
             </form>

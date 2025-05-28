@@ -2,9 +2,10 @@ package com.medicalsystem.appointment;
 
 import com.medicalsystem.Doctor.*;
 import com.medicalsystem.patient.*;
+
 import java.io.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import com.medicalsystem.appointment.dsa.PriorityQueue;
@@ -15,7 +16,7 @@ public class AppointmentManager {
     private final String filePath;
     private final PriorityQueue appointmentQueue = new PriorityQueue();
 
-    /// Purpose: Change file path from hardcoded to dynamically using (project_data/)
+    // Constructor
     public AppointmentManager() {
         ProjectSetup.initializeProjectFolder(); // Ensure folder exists
         this.filePath = ProjectSetup.DATA_FOLDER + "/appointments.txt";
@@ -30,10 +31,12 @@ public class AppointmentManager {
 
     // Add appointment
     public void addAppointment(Appointment a) {
-        appointmentQueue.offer(a);  ///we use offer instead of add operator
+        a.setAppointmentTime(LocalTime.now());  // Set time when booking
+        appointmentQueue.offer(a);
         appendToFile(a);
     }
 
+    // Read appointments from file
     private List<Appointment> readAppointmentsFromFile() {
         List<Appointment> appointments = new ArrayList<>();
         File file = new File(filePath);
@@ -43,10 +46,15 @@ public class AppointmentManager {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",", -1);
-                if (parts.length >= 9) {
+                if (parts.length >= 10) { // Now expects time as 10th part
                     Patient patient = new Patient(parts[1], parts[2], parts[3]);
                     Doctor doctor = new Doctor(parts[4], parts[5]);
                     Appointment appointment = new Appointment(parts[0], patient, doctor, parts[6], parts[7], parts[8]);
+
+                    if (!parts[9].isEmpty()) {
+                        appointment.setAppointmentTime(LocalTime.parse(parts[9]));  //time as part
+                    }
+
                     appointments.add(appointment);
                 }
             }
@@ -57,41 +65,37 @@ public class AppointmentManager {
         return appointments;
     }
 
-
-    // Append one appointment to file
+    // Append single appointment to file
     private void appendToFile(Appointment appointment) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
-            Patient p = appointment.getPatient();
-            Doctor d = appointment.getDoctor();
-            writer.write(String.join(",", appointment.getAppointmentID(), p.getName(), p.getGender(), p.getPhone(),
-                    d.getId(), d.getSpecialization(), appointment.getPriority(), appointment.getReason(), appointment.getStatus()));
+            writer.write(appointment.toFileString());  // Uses new toFileString with time
             writer.newLine();
         } catch (IOException e) {
             System.err.println("Error appending appointment: " + e.getMessage());
         }
     }
 
-    // Load file into queue
+    // Load all appointments from file into queue
     private void loadFromFile() {
         appointmentQueue.clear();
         List<Appointment> appointments = readAppointmentsFromFile();
         appointmentQueue.addAll(appointments);
     }
 
-
-    // Get sorted appointments
+    // Get appointments sorted by priority
     public List<Appointment> getSortedAppointments() {
         loadFromFile();
-        List<Appointment> sortedList = new ArrayList<>((Collection) appointmentQueue);
-        DSAUtils.bubbleSort(sortedList);  //bubbleSort usage
+        List<Appointment> sortedList = appointmentQueue.toList();
+        DSAUtils.bubbleSort(sortedList);
         return sortedList;
     }
 
+    // Get all appointments
     public List<Appointment> getAllAppointments() {
         return readAppointmentsFromFile();
     }
 
-
+    // Overwrite file with full list of appointments
     public void saveAllAppointments(List<Appointment> appointments) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(filePath, false))) {
             for (Appointment app : appointments) {
@@ -102,6 +106,7 @@ public class AppointmentManager {
         }
     }
 
+    // Delete appointment by ID
     public boolean deleteAppointment(String appointmentId) {
         List<Appointment> appointments = getAllAppointments();
         boolean removed = appointments.removeIf(app -> app.getAppointmentID().equals(appointmentId));
@@ -111,6 +116,7 @@ public class AppointmentManager {
         return removed;
     }
 
+    // Find appointment by ID
     public Appointment findAppointmentById(String appointmentId) {
         List<Appointment> appointments = getAllAppointments();
         for (Appointment a : appointments) {
@@ -121,6 +127,7 @@ public class AppointmentManager {
         return null;
     }
 
+    // Update an appointment
     public boolean updateAppointment(Appointment updated) {
         List<Appointment> appointments = getAllAppointments();
         for (int i = 0; i < appointments.size(); i++) {
@@ -130,12 +137,12 @@ public class AppointmentManager {
                 return true;
             }
         }
-        return  false;
+        return false;
     }
 
+    // Generate unique ID
     public String generateAppointmentId() {
         loadFromFile();
         return DSAUtils.generateAppointmentId(appointmentQueue.toList());
     }
-
 }

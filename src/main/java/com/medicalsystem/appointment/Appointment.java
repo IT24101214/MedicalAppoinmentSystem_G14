@@ -3,6 +3,8 @@ package com.medicalsystem.appointment;
 import com.medicalsystem.Doctor.Doctor;
 import com.medicalsystem.patient.Patient;
 
+import java.time.LocalTime;
+
 public class Appointment implements Comparable<Appointment> {
     private String appointmentID;
     private Patient patient;       // association
@@ -10,6 +12,7 @@ public class Appointment implements Comparable<Appointment> {
     private String priority;
     private String reason;
     private String status;
+    private LocalTime appointmentTime;
 
     public Appointment(String appointmentID, Patient patient, Doctor doctor,
                        String priority, String reason, String status) {
@@ -27,11 +30,12 @@ public class Appointment implements Comparable<Appointment> {
     public String getPriority() { return priority; }
     public String getReason() { return reason; }
     public String getStatus() { return status; }
+    public LocalTime getAppointmentTime() {return appointmentTime;}
     public void setStatus(String status) { this.status = status; }
     public void setDoctor(Doctor doctor) { this.doctor = doctor; }
     public void setPriority(String priority) { this.priority = priority; }
     public void setReason(String reason) { this.reason = reason; }
-
+    public void setAppointmentTime(LocalTime appointmentTime) {this.appointmentTime = appointmentTime;}
 
     @Override
     public int compareTo(Appointment o)
@@ -68,7 +72,8 @@ public class Appointment implements Comparable<Appointment> {
                 doctor.getSpecialization(),
                 priority,
                 reason,
-                status
+                status,
+                appointmentTime != null ? appointmentTime.toString() : ""
         );
     }
 }
